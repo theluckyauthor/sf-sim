@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { FounderStats, CompanyStats, District, LocationStats, GamePhase } from '../types/stats';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -96,13 +97,50 @@ const Button = styled.button<{ primary?: boolean }>`
   }
 `;
 
+interface Background {
+  title: string;
+  description?: string;
+  stats: {
+    founder: Partial<FounderStats>;
+    company?: Partial<CompanyStats>;
+  };
+}
+
+interface Role {
+  title: string;
+  description?: string;
+  stats: {
+    founder: Partial<FounderStats>;
+  };
+}
+
+interface StartupType {
+  title: string;
+  description?: string;
+  stats: {
+    company: Partial<CompanyStats>;
+  };
+}
+
+interface DistrictChoice {
+  title: string;
+  description?: string;
+  district: District;
+  stats: Partial<LocationStats>;
+}
+
+interface FormData {
+  founderName: string;
+  startupName: string;
+}
+
 interface ConfirmationScreenProps {
   founderData: {
-    selectedBackground: any;
-    selectedRole: any;
-    selectedStartupType: any;
-    selectedDistrict: any;
-    formData: any;
+    selectedBackground: Background;
+    selectedRole: Role;
+    selectedStartupType: StartupType;
+    selectedDistrict: DistrictChoice;
+    formData: FormData;
   };
   onBack: () => void;
   onConfirm: () => void;
@@ -126,19 +164,19 @@ const ConfirmationScreen: React.FC<ConfirmationScreenProps> = ({
             <StatsGrid>
               <StatRow>
                 <StatLabel>Name</StatLabel>
-                <StatValue>{formData.founderName}</StatValue>
+                <StatValue>{formData?.founderName || 'Unknown'}</StatValue>
               </StatRow>
               <StatRow>
                 <StatLabel>Background</StatLabel>
-                <StatValue>{selectedBackground.title}</StatValue>
+                <StatValue>{selectedBackground?.title || 'Unknown'}</StatValue>
               </StatRow>
               <StatRow>
                 <StatLabel>Starting Cash</StatLabel>
-                <StatValue>${selectedBackground.stats.finances.personalFunds.toLocaleString()}</StatValue>
+                <StatValue>${(selectedBackground?.stats?.founder?.cash || 0).toLocaleString()}</StatValue>
               </StatRow>
               <StatRow>
                 <StatLabel>Reputation</StatLabel>
-                <StatValue>{selectedBackground.stats.reputation.personal}/100</StatValue>
+                <StatValue>{selectedBackground?.stats?.founder?.reputation || 0}/100</StatValue>
               </StatRow>
             </StatsGrid>
           </StatsSection>
@@ -148,16 +186,30 @@ const ConfirmationScreen: React.FC<ConfirmationScreenProps> = ({
             <StatsGrid>
               <StatRow>
                 <StatLabel>Role</StatLabel>
-                <StatValue>{selectedRole.title}</StatValue>
+                <StatValue>{selectedRole?.title || 'Unknown'}</StatValue>
               </StatRow>
-              {Object.entries(selectedRole.stats.skills).map(([skill, value]) => (
-                <StatRow key={skill}>
-                  <StatLabel>{skill.charAt(0).toUpperCase() + skill.slice(1)}</StatLabel>
-                  <StatValue style={{ color: Number(value) > 0 ? '#4CAF50' : '#FF5722' }}>
-                    {Number(value) > 0 ? '+' : ''}{String(value)}
-                  </StatValue>
-                </StatRow>
-              ))}
+              {selectedRole?.stats?.founder && (
+                <>
+                  <StatRow>
+                    <StatLabel>Technical</StatLabel>
+                    <StatValue style={{ color: (selectedRole.stats.founder.technical || 0) > 0 ? '#4CAF50' : '#FF5722' }}>
+                      {(selectedRole.stats.founder.technical || 0) > 0 ? '+' : ''}{selectedRole.stats.founder.technical || 0}
+                    </StatValue>
+                  </StatRow>
+                  <StatRow>
+                    <StatLabel>Business</StatLabel>
+                    <StatValue style={{ color: (selectedRole.stats.founder.business || 0) > 0 ? '#4CAF50' : '#FF5722' }}>
+                      {(selectedRole.stats.founder.business || 0) > 0 ? '+' : ''}{selectedRole.stats.founder.business || 0}
+                    </StatValue>
+                  </StatRow>
+                  <StatRow>
+                    <StatLabel>Leadership</StatLabel>
+                    <StatValue style={{ color: (selectedRole.stats.founder.leadership || 0) > 0 ? '#4CAF50' : '#FF5722' }}>
+                      {(selectedRole.stats.founder.leadership || 0) > 0 ? '+' : ''}{selectedRole.stats.founder.leadership || 0}
+                    </StatValue>
+                  </StatRow>
+                </>
+              )}
             </StatsGrid>
           </StatsSection>
 
@@ -166,19 +218,23 @@ const ConfirmationScreen: React.FC<ConfirmationScreenProps> = ({
             <StatsGrid>
               <StatRow>
                 <StatLabel>Company</StatLabel>
-                <StatValue>{formData.startupName}</StatValue>
+                <StatValue>{formData?.startupName || 'Unknown'}</StatValue>
               </StatRow>
               <StatRow>
                 <StatLabel>Type</StatLabel>
-                <StatValue>{selectedStartupType.title}</StatValue>
+                <StatValue>{selectedStartupType?.title || 'Unknown'}</StatValue>
               </StatRow>
               <StatRow>
                 <StatLabel>Initial Valuation</StatLabel>
-                <StatValue>${selectedStartupType.stats.finances.valuation.toLocaleString()}</StatValue>
+                <StatValue>${(selectedStartupType?.stats?.company?.valuation || 0).toLocaleString()}</StatValue>
               </StatRow>
               <StatRow>
-                <StatLabel>Innovation Level</StatLabel>
-                <StatValue>{selectedStartupType.stats.product.innovation}/100</StatValue>
+                <StatLabel>Product Quality</StatLabel>
+                <StatValue>{selectedStartupType?.stats?.company?.productQuality || 0}/100</StatValue>
+              </StatRow>
+              <StatRow>
+                <StatLabel>Market Fit</StatLabel>
+                <StatValue>{selectedStartupType?.stats?.company?.marketFit || 0}/100</StatValue>
               </StatRow>
             </StatsGrid>
           </StatsSection>
@@ -188,15 +244,15 @@ const ConfirmationScreen: React.FC<ConfirmationScreenProps> = ({
             <StatsGrid>
               <StatRow>
                 <StatLabel>District</StatLabel>
-                <StatValue>{selectedDistrict.title}</StatValue>
+                <StatValue>{selectedDistrict?.title || 'Unknown'}</StatValue>
               </StatRow>
               <StatRow>
-                <StatLabel>Monthly Rent</StatLabel>
-                <StatValue>${selectedDistrict.stats.finances.burnRate.toLocaleString()}</StatValue>
+                <StatLabel>Type</StatLabel>
+                <StatValue>{selectedDistrict?.stats?.type || 'Unknown'}</StatValue>
               </StatRow>
               <StatRow>
-                <StatLabel>Networking Bonus</StatLabel>
-                <StatValue>+{selectedDistrict.stats.skills?.networking || 0}</StatValue>
+                <StatLabel>Networking Score</StatLabel>
+                <StatValue>{selectedDistrict?.stats?.networkingScore || 0}/100</StatValue>
               </StatRow>
             </StatsGrid>
           </StatsSection>

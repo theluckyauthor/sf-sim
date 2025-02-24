@@ -1,43 +1,106 @@
-import { GameEvent, GamePhase } from '../types/stats';
-import { morningRoutine } from './personal/wellness';
-import { initialTeamPlanning } from './team/hiring';
-import { initialFundingStrategy } from './funding/pitches';
-import { productBrainstorming } from './product/development';
+import { GameEvent, GamePhase, EventCategory, FounderStats, CompanyStats } from '../types/stats';
+
+// Personal Events
+import { morningRoutine, wellnessChallenge, burnoutWarning } from './personal/wellness';
+import { workspaceDecision } from './personal/workspace';
+import { fridayNightChoice, fundraisingWorkshop } from './personal/balance';
+
+// Team Events
+import { initialTeamPlanning, firstHire, executiveHiring } from './team/hiring';
+import { potentialCofounder, cofounderAlignment } from './team/cofounder';
+import { teamConflict, teamBuildingResponse } from './team/culture';
+
+// Funding Events
+import { initialFundingStrategy, angelOutreach, seedPitch } from './funding/pitches';
+import { acceleratorApplication, acceleratorInterview } from './funding/accelerator';
+
+// Product Events
+import { productBrainstorming, mvpCrunch, featurePrioritization } from './product/development';
+
+// Market Events
+import { initialMarketAnalysis, marketValidation } from './market/launch';
 
 // Networking Events
+import { techMeetupSOMA, founderCoffee } from './networking/meetups';
+import { localDemoPitch, pitchFeedback } from './networking/pitching';
+
+// San Francisco Events
+import { foggyMorning, missionWeekend, somaTechScene } from './sanfran/culture';
+
+// Random Events
+import { viralTweet, serendipitousConnection } from './random/opportunities';
+
+// Export all event modules
 export * from './networking/meetups';
 export * from './networking/pitching';
 export * from './networking/exposure';
-
-// Product Events
 export * from './product/development';
-
-// Team Events
 export * from './team/hiring';
 export * from './team/cofounder';
 export * from './team/culture';
-
-// Funding Events
 export * from './funding/pitches';
 export * from './funding/accelerator';
 export * from './funding/yc_outcomes';
-
-// Personal Events
 export * from './personal/wellness';
 export * from './personal/workspace';
 export * from './personal/balance';
-
-// Market Events
 export * from './market/launch';
-
-// Random Events
 export * from './random/opportunities';
-
-// San Francisco Events
 export * from './sanfran/culture';
 
+// Collect all events
+const allEvents: GameEvent[] = [
+  // Personal Events
+  morningRoutine,
+  wellnessChallenge,
+  burnoutWarning,
+  workspaceDecision,
+  fridayNightChoice,
+  fundraisingWorkshop,
+
+  // Team Events
+  initialTeamPlanning,
+  firstHire,
+  executiveHiring,
+  potentialCofounder,
+  cofounderAlignment,
+  teamConflict,
+  teamBuildingResponse,
+
+  // Funding Events
+  initialFundingStrategy,
+  angelOutreach,
+  seedPitch,
+  acceleratorApplication,
+  acceleratorInterview,
+
+  // Product Events
+  productBrainstorming,
+  mvpCrunch,
+  featurePrioritization,
+
+  // Market Events
+  initialMarketAnalysis,
+  marketValidation,
+
+  // Networking Events
+  techMeetupSOMA,
+  founderCoffee,
+  localDemoPitch,
+  pitchFeedback,
+
+  // San Francisco Events
+  foggyMorning,
+  missionWeekend,
+  somaTechScene,
+
+  // Random Events
+  viralTweet,
+  serendipitousConnection
+];
+
 // Event Categories
-export const EVENT_CATEGORIES = [
+export const EVENT_CATEGORIES: EventCategory[] = [
   'networking',
   'product',
   'team',
@@ -46,27 +109,27 @@ export const EVENT_CATEGORIES = [
   'market',
   'random',
   'sanfran'
-] as const;
+];
 
 // Event Phase Requirements
-export const PHASE_REQUIREMENTS = {
+export const PHASE_REQUIREMENTS: Record<EventCategory, Partial<Record<GamePhase, string[]>>> = {
   networking: {
-    SETTLING_IN: ['techMeetupSOMA'],
-    IDEATION: ['founderCoffee', 'localDemoPitch', 'pitchFeedback'],
-    BOOTSTRAPPING: [
+    [GamePhase.SETTLING_IN]: ['techMeetupSOMA'],
+    [GamePhase.IDEATION]: ['founderCoffee', 'localDemoPitch', 'pitchFeedback'],
+    [GamePhase.BOOTSTRAPPING]: [
       'startupConference',
       'mediaOpportunity',
       'mediaExposureStrategy',
       'partnershipDevelopment',
       'investorRelationshipBuilding'
     ],
-    FUNDRAISING: ['investorNetworking'],
-    SCALING: ['industryConference', 'partnershipSummit']
+    [GamePhase.FUNDRAISING]: ['investorNetworking'],
+    [GamePhase.SCALING]: ['industryConference', 'partnershipSummit']
   },
   product: {
-    SETTLING_IN: ['initialIdeaValidation'],
-    IDEATION: ['productBrainstorming', 'prototypeStrategy', 'userTesting'],
-    BOOTSTRAPPING: [
+    [GamePhase.SETTLING_IN]: ['initialIdeaValidation'],
+    [GamePhase.IDEATION]: ['productBrainstorming', 'prototypeStrategy', 'userTesting'],
+    [GamePhase.BOOTSTRAPPING]: [
       'mvpCrunch',
       'featurePrioritization',
       'featureValidation',
@@ -78,13 +141,13 @@ export const PHASE_REQUIREMENTS = {
       'userFeedbackIntegration',
       'productScalingStrategy'
     ],
-    FUNDRAISING: ['investorDemo', 'productRoadmapPitch', 'scalingChallenge'],
-    SCALING: ['productExpansion', 'enterpriseFeatures', 'platformStrategy']
+    [GamePhase.FUNDRAISING]: ['investorDemo', 'productRoadmapPitch', 'scalingChallenge'],
+    [GamePhase.SCALING]: ['productExpansion', 'enterpriseFeatures', 'platformStrategy']
   },
   team: {
-    SETTLING_IN: ['initialTeamPlanning'],
-    IDEATION: ['potentialCofounder', 'cofounderAlignment', 'cofounderOnboarding'],
-    BOOTSTRAPPING: [
+    [GamePhase.SETTLING_IN]: ['initialTeamPlanning'],
+    [GamePhase.IDEATION]: ['potentialCofounder', 'cofounderAlignment', 'cofounderOnboarding'],
+    [GamePhase.BOOTSTRAPPING]: [
       'firstHire',
       'teamCulture',
       'teamConflict',
@@ -98,14 +161,14 @@ export const PHASE_REQUIREMENTS = {
       'cultureReinforcement',
       'hiringStrategyAdjustment'
     ],
-    FUNDRAISING: ['executiveHiring', 'cultureDuringFundraising'],
-    SCALING: ['seniorHiringSpree', 'internationalTeam', 'remoteTeamCulture', 'culturalTransformation']
+    [GamePhase.FUNDRAISING]: ['executiveHiring', 'cultureDuringFundraising'],
+    [GamePhase.SCALING]: ['seniorHiringSpree', 'internationalTeam', 'remoteTeamCulture', 'culturalTransformation']
   },
   funding: {
-    SETTLING_IN: ['initialFundingStrategy'],
-    IDEATION: ['angelOutreach', 'friendsAndFamily', 'crowdfunding'],
-    BOOTSTRAPPING: ['acceleratorApplication', 'acceleratorInterview'],
-    FUNDRAISING: [
+    [GamePhase.SETTLING_IN]: ['initialFundingStrategy'],
+    [GamePhase.IDEATION]: ['angelOutreach', 'friendsAndFamily', 'crowdfunding'],
+    [GamePhase.BOOTSTRAPPING]: ['acceleratorApplication', 'acceleratorInterview'],
+    [GamePhase.FUNDRAISING]: [
       'seedPitch',
       'vcPitchPrep',
       'investorFeedback',
@@ -118,12 +181,12 @@ export const PHASE_REQUIREMENTS = {
       'strategicPivot',
       'boardFormation'
     ],
-    SCALING: ['seriesB', 'strategicInvestment', 'internationalExpansionFunding']
+    [GamePhase.SCALING]: ['seriesB', 'strategicInvestment', 'internationalExpansionFunding']
   },
   personal: {
-    SETTLING_IN: ['morningRoutine', 'workspaceDecision', 'healthyHabits', 'lifestyleSetup'],
-    IDEATION: ['mentalPreparation', 'passionProject'],
-    BOOTSTRAPPING: [
+    [GamePhase.SETTLING_IN]: ['morningRoutine', 'workspaceDecision', 'healthyHabits', 'lifestyleSetup'],
+    [GamePhase.IDEATION]: ['mentalPreparation', 'passionProject'],
+    [GamePhase.BOOTSTRAPPING]: [
       'burnoutWarning',
       'criticalBugDecision',
       'aftermathReflection',
@@ -134,13 +197,13 @@ export const PHASE_REQUIREMENTS = {
       'teamWellnessProgram',
       'leadershipStyleEvolution'
     ],
-    FUNDRAISING: ['stressManagement', 'familyTime'],
-    SCALING: ['executiveWellness', 'leadershipLifestyle']
+    [GamePhase.FUNDRAISING]: ['stressManagement', 'familyTime'],
+    [GamePhase.SCALING]: ['executiveWellness', 'leadershipLifestyle']
   },
   market: {
-    SETTLING_IN: ['initialMarketAnalysis'],
-    IDEATION: ['marketValidation'],
-    BOOTSTRAPPING: [
+    [GamePhase.SETTLING_IN]: ['initialMarketAnalysis'],
+    [GamePhase.IDEATION]: ['marketValidation'],
+    [GamePhase.BOOTSTRAPPING]: [
       'productHunt',
       'marketFeedback',
       'publicDemo',
@@ -153,18 +216,18 @@ export const PHASE_REQUIREMENTS = {
       'featureDevelopmentRace',
       'strategicPartnership'
     ],
-    FUNDRAISING: ['investorMarketPitch'],
-    SCALING: ['marketExpansion']
+    [GamePhase.FUNDRAISING]: ['investorMarketPitch'],
+    [GamePhase.SCALING]: ['marketExpansion']
   },
   random: {
-    SETTLING_IN: ['viralTweet', 'serendipitousConnection', 'talentedCandidate', 'marketOpportunity'],
-    IDEATION: ['viralTweet', 'serendipitousConnection', 'talentedCandidate', 'marketOpportunity'],
-    BOOTSTRAPPING: ['viralTweet', 'serendipitousConnection', 'talentedCandidate', 'techCrisis', 'marketOpportunity', 'competitorAcquisition'],
-    FUNDRAISING: ['viralTweet', 'serendipitousConnection', 'talentedCandidate', 'techCrisis', 'marketOpportunity', 'competitorAcquisition'],
-    SCALING: ['viralTweet', 'serendipitousConnection', 'talentedCandidate', 'techCrisis', 'marketOpportunity', 'competitorAcquisition']
+    [GamePhase.SETTLING_IN]: ['viralTweet', 'serendipitousConnection', 'talentedCandidate', 'marketOpportunity'],
+    [GamePhase.IDEATION]: ['viralTweet', 'serendipitousConnection', 'talentedCandidate', 'marketOpportunity'],
+    [GamePhase.BOOTSTRAPPING]: ['viralTweet', 'serendipitousConnection', 'talentedCandidate', 'techCrisis', 'marketOpportunity', 'competitorAcquisition'],
+    [GamePhase.FUNDRAISING]: ['viralTweet', 'serendipitousConnection', 'talentedCandidate', 'techCrisis', 'marketOpportunity', 'competitorAcquisition'],
+    [GamePhase.SCALING]: ['viralTweet', 'serendipitousConnection', 'talentedCandidate', 'techCrisis', 'marketOpportunity', 'competitorAcquisition']
   },
   sanfran: {
-    SETTLING_IN: [
+    [GamePhase.SETTLING_IN]: [
       'foggyMorning',
       'missionWeekend',
       'somaTechScene',
@@ -172,7 +235,7 @@ export const PHASE_REQUIREMENTS = {
       'chinatownLunch',
       'touristAttraction'
     ],
-    IDEATION: [
+    [GamePhase.IDEATION]: [
       'foggyMorning',
       'missionWeekend',
       'somaTechScene',
@@ -181,7 +244,7 @@ export const PHASE_REQUIREMENTS = {
       'chinatownLunch',
       'bayToBreakers'
     ],
-    BOOTSTRAPPING: [
+    [GamePhase.BOOTSTRAPPING]: [
       'foggyMorning',
       'missionWeekend',
       'somaTechScene',
@@ -192,7 +255,7 @@ export const PHASE_REQUIREMENTS = {
       'homelessnessImpact',
       'marinHeadlands'
     ],
-    FUNDRAISING: [
+    [GamePhase.FUNDRAISING]: [
       'foggyMorning',
       'missionWeekend',
       'somaTechScene',
@@ -203,7 +266,7 @@ export const PHASE_REQUIREMENTS = {
       'homelessnessImpact',
       'touristAttraction'
     ],
-    SCALING: [
+    [GamePhase.SCALING]: [
       'foggyMorning',
       'missionWeekend',
       'somaTechScene',
@@ -218,13 +281,13 @@ export const PHASE_REQUIREMENTS = {
 };
 
 // Income Milestones (Monthly Recurring Revenue)
-export const MRR_MILESTONES = {
-  SETTLING_IN: 0,
-  IDEATION: 1000,      // $1K MRR
-  BOOTSTRAPPING: 10000, // $10K MRR
-  FUNDRAISING: 100000,  // $100K MRR
-  SCALING: 1000000     // $1M MRR - Victory!
-} as const;
+export const MRR_MILESTONES: Record<GamePhase, number> = {
+  [GamePhase.SETTLING_IN]: 0,
+  [GamePhase.IDEATION]: 1000,      // $1K MRR
+  [GamePhase.BOOTSTRAPPING]: 10000, // $10K MRR
+  [GamePhase.FUNDRAISING]: 100000,  // $100K MRR
+  [GamePhase.SCALING]: 1000000     // $1M MRR - Victory!
+};
 
 // Company Stats Categories
 export const COMPANY_STATS = {
@@ -254,84 +317,173 @@ export const GAME_OVER_CONDITIONS = {
   TEAM_COLLAPSE: 'Complete team departure - Game Over',
   PRODUCT_FAILURE: 'Critical product failure with no recovery - Game Over',
   FOUNDER_BURNOUT: 'Founder burnout - Game Over'
-};
+} as const;
 
 // Progress Events (Triggered by good stats)
 export const PROGRESS_EVENTS = {
   VIRAL_GROWTH: {
-    condition: { userGrowth: 90, satisfaction: 85 },
-    reward: { mrr: 1.5, valuation: 1.3 }
+    condition: {
+      company: {
+        userGrowth: 90,
+        productQuality: 85
+      }
+    },
+    impact: {
+      company: {
+        revenue: 50000,
+        valuation: 1000000
+      }
+    }
   },
   TEAM_EXCELLENCE: {
-    condition: { satisfaction: 90, culture: 90 },
-    reward: { productivity: 1.3, retention: 1.2 }
+    condition: {
+      company: {
+        teamMorale: 90,
+        talent: 90
+      }
+    },
+    impact: {
+      company: {
+        productQuality: 10,
+        teamMorale: 10
+      }
+    }
   },
   MARKET_DOMINANCE: {
-    condition: { marketShare: 80, features: 85 },
-    reward: { mrr: 1.4, valuation: 1.5 }
+    condition: {
+      company: {
+        marketFit: 80,
+        productQuality: 85
+      }
+    },
+    impact: {
+      company: {
+        revenue: 100000,
+        valuation: 2000000
+      }
+    }
   }
 };
 
 // Phase Requirements
-export const PHASE_PROGRESSION = {
-  SETTLING_IN: {
-    mrr: 0,
-    minStats: { 'founder.skills.networking': 20 }
-  },
-  IDEATION: {
-    mrr: 1000,
+export const PHASE_PROGRESSION: Record<GamePhase, { 
+  revenue: number, 
+  minStats: { 
+    founder?: Partial<FounderStats>, 
+    company?: Partial<CompanyStats> 
+  } 
+}> = {
+  [GamePhase.SETTLING_IN]: {
+    revenue: 0,
     minStats: {
-      'founder.skills.technical': 30,
-      'product.satisfaction': 50
+      founder: {
+        technical: 20,
+        business: 20
+      }
     }
   },
-  BOOTSTRAPPING: {
-    mrr: 10000,
+  [GamePhase.IDEATION]: {
+    revenue: 1000,
     minStats: {
-      'team.size': 5,
-      'product.userGrowth': 40,
-      'business.runway': 6
+      founder: {
+        technical: 30
+      },
+      company: {
+        productQuality: 50
+      }
     }
   },
-  FUNDRAISING: {
-    mrr: 100000,
+  [GamePhase.BOOTSTRAPPING]: {
+    revenue: 10000,
     minStats: {
-      'founder.skills.fundraising': 60,
-      'business.valuation': 1000000,
-      'team.productivity': 70
+      company: {
+        teamSize: 5,
+        userGrowth: 40,
+        runway: 6
+      }
     }
   },
-  SCALING: {
-    mrr: 500000,
+  [GamePhase.FUNDRAISING]: {
+    revenue: 100000,
     minStats: {
-      'team.size': 20,
-      'product.marketShare': 10,
-      'business.runway': 12
+      founder: {
+        business: 60
+      },
+      company: {
+        valuation: 1000000,
+        teamMorale: 70
+      }
+    }
+  },
+  [GamePhase.SCALING]: {
+    revenue: 500000,
+    minStats: {
+      company: {
+        teamSize: 20,
+        marketFit: 10,
+        runway: 12
+      }
     }
   }
 };
 
 // Map of events by phase
-const eventsByPhase: Record<GamePhase, GameEvent[]> = {
+export const eventsByPhase: Record<GamePhase, GameEvent[]> = {
   [GamePhase.SETTLING_IN]: [
     morningRoutine,
     initialTeamPlanning,
-    initialFundingStrategy
+    initialFundingStrategy,
+    workspaceDecision,
+    techMeetupSOMA,
+    initialMarketAnalysis,
+    foggyMorning,
+    missionWeekend,
+    somaTechScene
   ],
   [GamePhase.IDEATION]: [
-    productBrainstorming
+    productBrainstorming,
+    founderCoffee,
+    localDemoPitch,
+    pitchFeedback,
+    potentialCofounder,
+    cofounderAlignment,
+    angelOutreach,
+    marketValidation
   ],
-  [GamePhase.BOOTSTRAPPING]: [],
-  [GamePhase.FUNDRAISING]: [],
-  [GamePhase.SCALING]: []
+  [GamePhase.BOOTSTRAPPING]: [
+    mvpCrunch,
+    featurePrioritization,
+    teamConflict,
+    teamBuildingResponse,
+    acceleratorApplication,
+    acceleratorInterview,
+    burnoutWarning,
+    fridayNightChoice,
+    fundraisingWorkshop
+  ],
+  [GamePhase.FUNDRAISING]: [
+    seedPitch,
+    executiveHiring,
+    wellnessChallenge
+  ],
+  [GamePhase.SCALING]: [
+    firstHire,
+    viralTweet,
+    serendipitousConnection
+  ]
 };
 
+interface GameStats {
+  founder: FounderStats;
+  company: CompanyStats;
+}
+
 // Check if game is over based on stats
-export const checkGameOver = (stats: any) => {
-  if (stats.startup.finances.cash <= -100000) {
+export const checkGameOver = (stats: GameStats): string | null => {
+  if (stats.company.runway <= 0) {
     return GAME_OVER_CONDITIONS.BANKRUPTCY;
   }
-  if (stats.founder.wellBeing.stress >= 100) {
+  if (stats.founder.energy <= 0) {
     return GAME_OVER_CONDITIONS.FOUNDER_BURNOUT;
   }
   return null;
@@ -341,7 +493,7 @@ export const checkGameOver = (stats: any) => {
 export const getNextEvent = (
   currentPhase: GamePhase,
   usedEventIds: string[],
-  stats: any
+  stats: GameStats
 ): GameEvent | null => {
   const availableEvents = eventsByPhase[currentPhase].filter(
     event => !usedEventIds.includes(event.id) && checkEventConditions(event, stats)
@@ -356,17 +508,23 @@ export const getNextEvent = (
 };
 
 // Check if event conditions are met
-const checkEventConditions = (event: GameEvent, stats: any): boolean => {
+const checkEventConditions = (event: GameEvent, stats: GameStats): boolean => {
   if (!event.conditions) return true;
 
   const { minimumStats } = event.conditions;
   if (!minimumStats) return true;
 
-  // Check each stat requirement
-  for (const [statPath, requirements] of Object.entries(minimumStats)) {
-    const currentStats = statPath.split('.').reduce((obj, key) => obj[key], stats);
-    for (const [stat, minValue] of Object.entries(requirements)) {
-      if (currentStats[stat] < minValue) {
+  if (minimumStats.founder) {
+    for (const [stat, value] of Object.entries(minimumStats.founder)) {
+      if ((stats.founder[stat as keyof FounderStats] ?? 0) < value) {
+        return false;
+      }
+    }
+  }
+
+  if (minimumStats.company) {
+    for (const [stat, value] of Object.entries(minimumStats.company)) {
+      if ((stats.company[stat as keyof CompanyStats] ?? 0) < value) {
         return false;
       }
     }
@@ -376,17 +534,28 @@ const checkEventConditions = (event: GameEvent, stats: any): boolean => {
 };
 
 // Check if ready to advance to next phase
-export const checkPhaseAdvancement = (currentPhase: GamePhase, stats: any): boolean => {
-  switch (currentPhase) {
-    case GamePhase.SETTLING_IN:
-      return stats.founder.skills.execution >= 10;
-    case GamePhase.IDEATION:
-      return stats.startup.product.mvpProgress >= 50;
-    case GamePhase.BOOTSTRAPPING:
-      return stats.startup.finances.revenue >= 10000;
-    case GamePhase.FUNDRAISING:
-      return stats.startup.finances.valuation >= 1000000;
-    default:
-      return false;
+export const checkPhaseAdvancement = (currentPhase: GamePhase, stats: GameStats): boolean => {
+  const requirements = PHASE_PROGRESSION[currentPhase];
+  if (!requirements) return false;
+
+  if (stats.company.revenue < requirements.revenue) return false;
+
+  const { minStats } = requirements;
+  if (minStats.founder) {
+    for (const [stat, value] of Object.entries(minStats.founder)) {
+      if ((stats.founder[stat as keyof FounderStats] ?? 0) < value) {
+        return false;
+      }
+    }
   }
+
+  if (minStats.company) {
+    for (const [stat, value] of Object.entries(minStats.company)) {
+      if ((stats.company[stat as keyof CompanyStats] ?? 0) < value) {
+        return false;
+      }
+    }
+  }
+
+  return true;
 }; 

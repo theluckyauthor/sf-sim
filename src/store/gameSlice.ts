@@ -5,7 +5,8 @@ import {
   FounderStats,
   CompanyStats,
   LocationStats,
-  District
+  District,
+  GameEvent
 } from '../types/stats';
 
 interface HistoryEntry {
@@ -20,6 +21,7 @@ interface HistoryEntry {
 
 interface ExtendedGameState extends GameState {
   history: HistoryEntry[];
+  currentEvent?: GameEvent;
 }
 
 const initialState: ExtendedGameState = {
@@ -93,6 +95,9 @@ const gameSlice = createSlice({
     },
     addHistoryEntry(state, action: PayloadAction<HistoryEntry>) {
       state.history.unshift(action.payload); // Add new entries at the beginning
+    },
+    setCurrentEvent: (state, action: PayloadAction<GameEvent>) => {
+      state.currentEvent = action.payload;
     }
   }
 });
@@ -103,7 +108,8 @@ export const {
   updateLocation,
   advancePhase,
   advanceTime,
-  addHistoryEntry
+  addHistoryEntry,
+  setCurrentEvent
 } = gameSlice.actions;
 
 export default gameSlice.reducer; 

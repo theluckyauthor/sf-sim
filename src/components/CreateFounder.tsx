@@ -146,19 +146,57 @@ const OptionDescription = styled.div`
   color: #aaa;
 `;
 
-const backgrounds = [
+interface Background {
+  id: string;
+  title: string;
+  description: string;
+  stats: {
+    founder: Partial<FounderStats>;
+    company?: Partial<CompanyStats>;
+  };
+}
+
+interface Role {
+  id: string;
+  title: string;
+  description: string;
+  stats: {
+    founder: Partial<FounderStats>;
+  };
+}
+
+interface StartupType {
+  id: string;
+  title: string;
+  description: string;
+  stats: {
+    company: Partial<CompanyStats>;
+  };
+}
+
+interface DistrictChoice {
+  id: string;
+  title: District;
+  description: string;
+  district: District;
+  stats: Partial<LocationStats>;
+}
+
+const backgrounds: Background[] = [
   {
     id: 'stanford_dropout',
     title: 'Stanford Dropout',
     description: 'Left Stanford CS program to pursue your startup dreams. High potential, good network.',
     stats: {
-      health: 90,
-      energy: 95,
-      technical: 70,
-      business: 50,
-      leadership: 40,
-      cash: 50000,
-      reputation: 70
+      founder: {
+        health: 90,
+        energy: 95,
+        technical: 70,
+        business: 50,
+        leadership: 40,
+        cash: 50000,
+        reputation: 70
+      }
     }
   },
   {
@@ -166,13 +204,15 @@ const backgrounds = [
     title: 'Bootcamp Graduate',
     description: 'Completed a coding bootcamp. Hungry for success, but limited savings.',
     stats: {
-      health: 85,
-      energy: 90,
-      technical: 50,
-      business: 30,
-      leadership: 30,
-      cash: 15000,
-      reputation: 30
+      founder: {
+        health: 85,
+        energy: 90,
+        technical: 50,
+        business: 30,
+        leadership: 30,
+        cash: 15000,
+        reputation: 30
+      }
     }
   },
   {
@@ -180,25 +220,15 @@ const backgrounds = [
     title: 'Big Tech Veteran',
     description: 'Ex-FAANG engineer with savings but higher expectations.',
     stats: {
-      health: 80,
-      energy: 75,
-      stress: 30
-    },
-    skills: {
-      technical: 85,
-      leadership: 70,
-      networking: 75,
-      fundraising: 60,
-      experience: 80
-    },
-    reputation: {
-      personal: 70,
-      network: 80
-    },
-    finances: {
-      personalFunds: 200000,
-      salary: 0,
-      investments: 50000
+      founder: {
+        health: 80,
+        energy: 75,
+        technical: 85,
+        business: 60,
+        leadership: 70,
+        cash: 200000,
+        reputation: 70
+      }
     }
   },
   {
@@ -206,54 +236,29 @@ const backgrounds = [
     title: 'Indie Hacker',
     description: 'Self-taught developer with viral GitHub projects.',
     stats: {
-      health: 88,
-      energy: 85,
-      stress: 45
-    },
-    skills: {
-      technical: 75,
-      leadership: 45,
-      networking: 55,
-      fundraising: 40,
-      experience: 50
-    },
-    reputation: {
-      personal: 50,
-      network: 60
-    },
-    finances: {
-      personalFunds: 25000,
-      salary: 0,
-      investments: 5000
+      founder: {
+        health: 88,
+        energy: 85,
+        technical: 75,
+        business: 45,
+        leadership: 45,
+        cash: 25000,
+        reputation: 50
+      }
     }
   }
 ];
 
-const startupRoles = [
+const startupRoles: Role[] = [
   {
     id: 'technical_founder',
     title: 'Technical Founder',
     description: 'You build the product. +Product development, -Fundraising',
     stats: {
-      skills: {
+      founder: {
         technical: 30,
-        leadership: 10,
-        networking: 0,
-        fundraising: -10,
-        experience: 10,
-        marketing: 0,
-        execution: 20,
-        growth: 10,
-        sustainability: 15
-      },
-      startup: {
-        product: {
-          quality: 20,
-          innovation: 15
-        },
-        team: {
-          productivity: 20
-        }
+        business: -10,
+        leadership: 10
       }
     }
   },
@@ -262,25 +267,10 @@ const startupRoles = [
     title: 'Business Founder',
     description: 'You handle business & fundraising. +Fundraising, -Product development',
     stats: {
-      skills: {
+      founder: {
         technical: -10,
-        leadership: 20,
-        networking: 20,
-        fundraising: 30,
-        experience: 10,
-        marketing: 0,
-        execution: 0,
-        growth: 0,
-        sustainability: 0
-      },
-      startup: {
-        market: {
-          brandReputation: 15,
-          marketFit: 20
-        },
-        finances: {
-          burnRate: -10
-        }
+        business: 30,
+        leadership: 20
       }
     }
   },
@@ -289,25 +279,10 @@ const startupRoles = [
     title: 'Visionary Founder',
     description: "You are the idea person. +Marketing, -Execution",
     stats: {
-      skills: {
+      founder: {
         technical: 0,
-        leadership: 25,
-        networking: 15,
-        fundraising: 20,
-        experience: 10,
-        marketing: 25,
-        execution: -10,
-        growth: 0,
-        sustainability: 0
-      },
-      startup: {
-        product: {
-          innovation: 25
-        },
-        market: {
-          socialPresence: 20,
-          brandReputation: 20
-        }
+        business: 25,
+        leadership: 25
       }
     }
   },
@@ -316,45 +291,32 @@ const startupRoles = [
     title: 'Growth Hacker',
     description: 'You focus on growth at all costs. +User Acquisition, -Sustainability',
     stats: {
-      skills: {
+      founder: {
         technical: 10,
-        leadership: 15,
-        networking: 25,
-        fundraising: 15,
-        experience: 10,
-        marketing: 0,
-        execution: 0,
-        growth: 25,
-        sustainability: -10
-      },
-      startup: {
-        market: {
-          userTraction: 25,
-          socialPresence: 20
-        },
-        finances: {
-          burnRate: 15
-        }
+        business: 25,
+        leadership: 15
       }
     }
   }
 ];
 
-const startupTypes = [
+const startupTypes: StartupType[] = [
   {
     id: 'ai_startup',
     title: 'AI/ML Startup',
     description: 'Building the next generation of AI tools',
     stats: {
-      productQuality: 20,
-      marketFit: 20,
-      userGrowth: 0,
-      revenue: 0,
-      runway: 12,
-      valuation: 2000000,
-      teamSize: 1,
-      teamMorale: 100,
-      talent: 70
+      company: {
+        productQuality: 20,
+        marketFit: 20,
+        userGrowth: 0,
+        revenue: 0,
+        runway: 12,
+        valuation: 2000000,
+        teamSize: 1,
+        teamMorale: 100,
+        talent: 70
+      }
     }
   },
   {
@@ -362,15 +324,17 @@ const startupTypes = [
     title: 'B2B SaaS',
     description: 'Enterprise software solutions',
     stats: {
-      productQuality: 25,
-      marketFit: 25,
-      userGrowth: 15,
-      revenue: 0,
-      runway: 15,
-      valuation: 1000000,
-      teamSize: 1,
-      teamMorale: 100,
-      talent: 50
+      company: {
+        productQuality: 25,
+        marketFit: 25,
+        userGrowth: 15,
+        revenue: 0,
+        runway: 15,
+        valuation: 1000000,
+        teamSize: 1,
+        teamMorale: 100,
+        talent: 50
+      }
     }
   },
   {
@@ -378,15 +342,17 @@ const startupTypes = [
     title: 'Web3/Crypto',
     description: 'Decentralized applications and protocols',
     stats: {
-      productQuality: 15,
-      marketFit: 30,
-      userGrowth: 30,
-      revenue: 0,
-      runway: 10,
-      valuation: 3000000,
-      teamSize: 1,
-      teamMorale: 100,
-      talent: 60
+      company: {
+        productQuality: 15,
+        marketFit: 30,
+        userGrowth: 30,
+        revenue: 0,
+        runway: 10,
+        valuation: 3000000,
+        teamSize: 1,
+        teamMorale: 100,
+        talent: 60
+      }
     }
   },
   {
@@ -394,64 +360,64 @@ const startupTypes = [
     title: 'Social Impact',
     description: 'Technology for social good',
     stats: {
-      productQuality: 20,
-      marketFit: 25,
-      userGrowth: 25,
-      revenue: 0,
-      runway: 15,
-      valuation: 500000,
-      teamSize: 1,
-      teamMorale: 100,
-      talent: 50
+      company: {
+        productQuality: 20,
+        marketFit: 25,
+        userGrowth: 25,
+        revenue: 0,
+        runway: 15,
+        valuation: 500000,
+        teamSize: 1,
+        teamMorale: 100,
+        talent: 50
+      }
     }
   }
 ];
 
-const districts = [
+const districts: DistrictChoice[] = [
   {
     id: 'soma',
     title: District.SOMA,
     description: 'Startup central. Close to VCs but expensive.',
+    district: District.SOMA,
     stats: {
-      stress: 10,
-      networking: 20,
-      fundraising: 15,
-      burnRate: 5000,
-      networkingScore: 20
+      type: 'coworking',
+      networkingScore: 80,
+      district: District.SOMA
     }
   },
   {
     id: 'mission',
     title: District.MISSION,
     description: 'Hip area with great food and culture.',
+    district: District.MISSION,
     stats: {
-      stress: 5,
-      health: 10,
-      networking: 10,
-      burnRate: 3500,
-      networkingScore: 10
+      type: 'home',
+      networkingScore: 60,
+      district: District.MISSION
     }
   },
   {
     id: 'hayes_valley',
-    title: 'Hayes Valley',
+    title: District.HAYES_VALLEY,
     description: 'Trendy neighborhood near Twitter HQ.',
+    district: District.HAYES_VALLEY,
     stats: {
-      stress: 8,
-      networking: 15,
-      burnRate: 4500,
-      networkingScore: 15
+      type: 'coworking',
+      networkingScore: 70,
+      district: District.HAYES_VALLEY
     }
   },
   {
     id: 'richmond',
-    title: 'Richmond District',
+    title: District.RICHMOND,
     description: 'Quieter, foggy, more affordable.',
+    district: District.RICHMOND,
     stats: {
-      stress: -5,
-      health: 5,
-      burnRate: 2500,
-      networkingScore: 0
+      type: 'home',
+      networkingScore: 40,
+      district: District.RICHMOND
     }
   }
 ];
@@ -471,13 +437,12 @@ const CreateFounder: React.FC = () => {
     catchphrase: '',
   });
 
-  const selectedBackground = backgrounds.find(bg => bg.id === formData.background);
-  const selectedRole = startupRoles.find(role => role.id === formData.role);
-  const selectedStartupType = startupTypes.find(type => type.id === formData.startupType);
-  const selectedDistrict = districts.find(d => d.id === formData.district);
+  const selectedBackground = backgrounds.find(bg => bg.id === formData.background)!;
+  const selectedRole = startupRoles.find(role => role.id === formData.role)!;
+  const selectedStartupType = startupTypes.find(type => type.id === formData.startupType)!;
+  const selectedDistrict = districts.find(d => d.id === formData.district)!;
 
   const handleContinue = () => {
-    if (!selectedBackground || !selectedRole || !selectedStartupType || !selectedDistrict) return;
     if (!formData.founderName || !formData.startupName) return;
     setShowConfirmation(true);
   };
@@ -487,36 +452,34 @@ const CreateFounder: React.FC = () => {
   };
 
   const handleConfirm = () => {
-    if (!selectedBackground || !selectedRole || !selectedStartupType || !selectedDistrict) return;
-
     // Initialize founder state with new stat structure
     const founderState: FounderStats = {
-      health: selectedBackground.stats.health ?? 80,
-      energy: selectedBackground.stats.energy ?? 80,
-      technical: selectedBackground.stats.technical ?? 50,
-      business: selectedBackground.stats.business ?? 50,
-      leadership: selectedBackground.stats.leadership ?? 50,
-      cash: selectedBackground.stats.cash ?? 10000,
-      reputation: selectedBackground.stats.reputation ?? 50
+      health: selectedBackground.stats.founder.health ?? 80,
+      energy: selectedBackground.stats.founder.energy ?? 80,
+      technical: (selectedBackground.stats.founder.technical ?? 50) + (selectedRole.stats.founder.technical ?? 0),
+      business: (selectedBackground.stats.founder.business ?? 50) + (selectedRole.stats.founder.business ?? 0),
+      leadership: (selectedBackground.stats.founder.leadership ?? 50) + (selectedRole.stats.founder.leadership ?? 0),
+      cash: selectedBackground.stats.founder.cash ?? 10000,
+      reputation: selectedBackground.stats.founder.reputation ?? 50
     };
 
     // Initialize company state with new stat structure
     const companyState: CompanyStats = {
-      productQuality: selectedStartupType.stats.productQuality,
-      marketFit: selectedStartupType.stats.marketFit,
-      userGrowth: selectedStartupType.stats.userGrowth,
-      revenue: selectedStartupType.stats.revenue,
-      runway: selectedStartupType.stats.runway,
-      valuation: selectedStartupType.stats.valuation,
-      teamSize: selectedStartupType.stats.teamSize,
-      teamMorale: selectedStartupType.stats.teamMorale,
-      talent: selectedStartupType.stats.talent
+      productQuality: selectedStartupType.stats.company.productQuality ?? 0,
+      marketFit: selectedStartupType.stats.company.marketFit ?? 0,
+      userGrowth: selectedStartupType.stats.company.userGrowth ?? 0,
+      revenue: selectedStartupType.stats.company.revenue ?? 0,
+      runway: selectedStartupType.stats.company.runway ?? 12,
+      valuation: selectedStartupType.stats.company.valuation ?? 0,
+      teamSize: selectedStartupType.stats.company.teamSize ?? 1,
+      teamMorale: selectedStartupType.stats.company.teamMorale ?? 100,
+      talent: selectedStartupType.stats.company.talent ?? 50
     };
 
     // Initialize location state with new stat structure
     const locationState: LocationStats = {
-      district: selectedDistrict.title as District,
-      type: 'home',
+      district: selectedDistrict.district,
+      type: selectedDistrict.stats.type ?? 'home',
       networkingScore: selectedDistrict.stats.networkingScore ?? 0
     };
 

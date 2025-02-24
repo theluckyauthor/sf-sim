@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/store';
+import { setCurrentEvent } from '../store/gameSlice';
 import StatusPanel from './StatusPanel';
 import TextPanel from './TextPanel';
 import HistoryLog from './HistoryLog';
@@ -23,20 +24,29 @@ const Container = styled.div`
 `;
 
 const GameContainer: React.FC = () => {
+  const dispatch = useDispatch();
   const gameState = useSelector((state: RootState) => state.game);
-  const [currentEvent, setCurrentEvent] = useState<GameEvent | null>(null);
   const [usedEventIds, setUsedEventIds] = useState<string[]>([]);
 
   useEffect(() => {
     // Get next event when phase changes or after handling a choice
     const nextEvent = getNextEvent(gameState.progress.phase, usedEventIds, gameState);
-    setCurrentEvent(nextEvent);
-  }, [gameState.progress.phase, usedEventIds]);
+    if (nextEvent) {
+      dispatch(setCurrentEvent(nextEvent));
+    }
+  }, [gameState.progress.phase, usedEventIds, dispatch]);
+
+  const handleEventComplete = (eventId: string) => {
+    setUsedEventIds(prev => [...prev, eventId]);
+  };
 
   return (
     <Container>
       <StatusPanel />
-      <TextPanel currentEvent={currentEvent || undefined} />
+      <TextPanel 
+        currentEvent={gameState.currentEvent} 
+        onEventComplete={handleEventComplete}
+      />
       <HistoryLog />
     </Container>
   );

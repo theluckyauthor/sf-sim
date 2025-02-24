@@ -128,3 +128,8 @@ export interface GameState {
   location: LocationStats;
   progress: GameProgress;
 }
+
+// Random Event
+export interface RandomEvent extends GameEvent {
+  probability: number; // 0-1 chance of occurring
+}

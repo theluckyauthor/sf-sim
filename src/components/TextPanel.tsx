@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
@@ -6,7 +6,8 @@ import {
   updateFounder, 
   updateCompany, 
   updateLocation,
-  advanceTime 
+  advanceTime,
+  setCurrentEvent 
 } from '../store/gameSlice';
 import { 
   FounderStats, 
@@ -16,9 +17,17 @@ import {
   GamePhase, 
   GameEvent, 
   GameEventChoice, 
-  EventImpact 
+  EventImpact,
+  EventCategory 
 } from '../types/stats';
-import { getNextEvent, checkGameOver, checkPhaseAdvancement, EVENT_CATEGORIES } from '../events';
+import { 
+  getNextEvent, 
+  checkGameOver, 
+  checkPhaseAdvancement, 
+  EVENT_CATEGORIES, 
+  PHASE_REQUIREMENTS,
+  eventsByPhase 
+} from '../events';
 import { RootState } from '../store/store';
 import { phaseData } from '../data/phaseData';
 
@@ -130,12 +139,8 @@ const StatChange = styled.div<{ isPositive: boolean }>`
 `;
 
 interface TextPanelProps {
-  currentEvent?: {
-    id: string;
-    title: string;
-    description: string;
-    choices: GameEventChoice[];
-  };
+  currentEvent?: GameEvent;
+  onEventComplete?: (eventId: string) => void;
 }
 
 const CATEGORY_ICONS: Record<string, string> = {
@@ -149,6 +154,16 @@ const CATEGORY_ICONS: Record<string, string> = {
   team: '👥'
 };
 
+// Shuffle array implementation
+const shuffle = <T,>(array: T[]): T[] => {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+};
+
 // Add interface for game state
 interface GameState {
   founder: FounderStats;
@@ -157,20 +172,48 @@ interface GameState {
   progress: GameProgress;
 }
 
-const TextPanel: React.FC<TextPanelProps> = ({ currentEvent }) => {
+const TextPanel: React.FC<TextPanelProps> = ({ currentEvent, onEventComplete }) => {
   const dispatch = useDispatch();
   const gameState = useSelector((state: RootState) => state.game);
   const [usedEventIds, setUsedEventIds] = React.useState<string[]>([]);
   const [tutorialStep, setTutorialStep] = React.useState(0);
   const [showingPhaseIntro, setShowingPhaseIntro] = React.useState(false);
   const [showingCategories, setShowingCategories] = React.useState(false);
-  const [selectedCategory, setSelectedCategory] = React.useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = React.useState<EventCategory | null>(null);
   const [lastOutcome, setLastOutcome] = React.useState<{
     title: string;
     choice: string;
     impacts: { stat: string; value: number; }[];
   } | null>(null);
   const [hasCompletedTutorial, setHasCompletedTutorial] = React.useState(false);
+
+  // Move useMemo to component top level
+  const availableCategoryOptions = useMemo(() => {
+    const currentPhase = gameState.progress.phase;
+    console.log('Current phase:', currentPhase);
+    console.log('Phase events:', eventsByPhase[currentPhase]);
+    console.log('Used event IDs:', usedEventIds);
+
+    // Get available categories for current phase
+    const availableCategories = EVENT_CATEGORIES.filter(category => {
+      const eventsForCategory = eventsByPhase[currentPhase].filter(event => 
+        event.category === category && !usedEventIds.includes(event.id)
+      );
+      console.log(`Category ${category} has ${eventsForCategory.length} available events`);
+      return eventsForCategory.length > 0;
+    });
+
+    console.log('Available categories:', availableCategories);
+    
+    // If no categories are available, show all categories
+    const categoriesToShow = availableCategories.length > 0 ? 
+      availableCategories : EVENT_CATEGORIES;
+    
+    console.log('Categories to show:', categoriesToShow);
+    
+    // Return 2 random categories
+    return shuffle(categoriesToShow).slice(0, 2);
+  }, [gameState.progress.phase, usedEventIds]);
 
   useEffect(() => {
     if (hasCompletedTutorial && gameState.progress.phase !== GamePhase.SETTLING_IN) {
@@ -193,10 +236,37 @@ const TextPanel: React.FC<TextPanelProps> = ({ currentEvent }) => {
     setShowingCategories(true);
   };
 
-  const handleCategorySelect = (category: string) => {
+  // Function to get next event based on category
+  const getNextEventForCategory = (category: EventCategory) => {
+    // Get all events for the current phase
+    const phaseEvents = eventsByPhase[gameState.progress.phase] || [];
+    
+    // Filter events by category and not used
+    const availableEvents = phaseEvents.filter(event => 
+      event.category === category && 
+      !usedEventIds.includes(event.id) &&
+      (!event.conditions?.requiredPhase || event.conditions.requiredPhase === gameState.progress.phase)
+    );
+    
+    if (availableEvents.length === 0) return null;
+    
+    // Select a random event from available ones
+    const randomIndex = Math.floor(Math.random() * availableEvents.length);
+    return availableEvents[randomIndex];
+  };
+
+  const handleCategorySelect = (category: EventCategory) => {
     setSelectedCategory(category);
     setShowingCategories(false);
-    // Here you would trigger getting an event of the selected category
+    
+    // Get next event for the selected category
+    const nextEvent = getNextEventForCategory(category);
+    if (nextEvent) {
+      dispatch(setCurrentEvent(nextEvent));
+    } else {
+      // If no events available for this category, show categories again
+      setShowingCategories(true);
+    }
   };
 
   const getTutorialContent = () => {
@@ -326,9 +396,15 @@ const TextPanel: React.FC<TextPanelProps> = ({ currentEvent }) => {
       return;
     }
 
-    // Add current event to used events
+    // Add current event to used events and notify parent
     if (currentEvent) {
       setUsedEventIds(prev => [...prev, currentEvent.id]);
+      onEventComplete?.(currentEvent.id);
+    }
+
+    // Check if we should advance to the next phase
+    if (checkPhaseAdvancement(gameState.progress.phase, gameState)) {
+      dispatch(advancePhase());
     }
   };
 
@@ -359,10 +435,6 @@ const TextPanel: React.FC<TextPanelProps> = ({ currentEvent }) => {
 
   // Show category selection
   if (showingCategories) {
-    // Get 2 random categories
-    const shuffledCategories = [...EVENT_CATEGORIES].sort(() => Math.random() - 0.5);
-    const categoryOptions = shuffledCategories.slice(0, 2);
-
     return (
       <Panel>
         <Title>Choose Your Next Move</Title>
@@ -370,15 +442,19 @@ const TextPanel: React.FC<TextPanelProps> = ({ currentEvent }) => {
           Which path will you take?
         </Description>
         <CategoryGrid>
-          {categoryOptions.map(category => (
-            <CategoryButton
-              key={category}
-              onClick={() => handleCategorySelect(category)}
-            >
-              <CategoryIcon>{CATEGORY_ICONS[category]}</CategoryIcon>
-              {category.charAt(0).toUpperCase() + category.slice(1)}
-            </CategoryButton>
-          ))}
+          {availableCategoryOptions.length > 0 ? (
+            availableCategoryOptions.map((category: EventCategory) => (
+              <CategoryButton
+                key={category}
+                onClick={() => handleCategorySelect(category)}
+              >
+                <CategoryIcon>{CATEGORY_ICONS[category]}</CategoryIcon>
+                {category.charAt(0).toUpperCase() + category.slice(1)}
+              </CategoryButton>
+            ))
+          ) : (
+            <Description>No more events available in this phase.</Description>
+          )}
         </CategoryGrid>
       </Panel>
     );
