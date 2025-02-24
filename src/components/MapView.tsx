@@ -40,13 +40,6 @@ const Value = styled.span`
   display: block;
 `;
 
-const districts = {
-  'SOMA': { x: 150, y: 150 },
-  'Mission': { x: 100, y: 200 },
-  'Financial District': { x: 200, y: 100 },
-  'Hayes Valley': { x: 50, y: 150 },
-};
-
 const MapView: React.FC = () => {
   const { location } = useSelector((state: RootState) => state.game);
 

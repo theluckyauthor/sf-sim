@@ -134,11 +134,11 @@ const ConfirmationScreen: React.FC<ConfirmationScreenProps> = ({
               </StatRow>
               <StatRow>
                 <StatLabel>Starting Cash</StatLabel>
-                <StatValue>${selectedBackground.cash.toLocaleString()}</StatValue>
+                <StatValue>${selectedBackground.stats.finances.personalFunds.toLocaleString()}</StatValue>
               </StatRow>
               <StatRow>
                 <StatLabel>Reputation</StatLabel>
-                <StatValue>{selectedBackground.reputation}/100</StatValue>
+                <StatValue>{selectedBackground.stats.reputation.personal}/100</StatValue>
               </StatRow>
             </StatsGrid>
           </StatsSection>
@@ -150,11 +150,11 @@ const ConfirmationScreen: React.FC<ConfirmationScreenProps> = ({
                 <StatLabel>Role</StatLabel>
                 <StatValue>{selectedRole.title}</StatValue>
               </StatRow>
-              {Object.entries(selectedRole.bonuses as Record<string, number>).map(([skill, bonus]: [string, number]) => (
+              {Object.entries(selectedRole.stats.skills).map(([skill, value]) => (
                 <StatRow key={skill}>
                   <StatLabel>{skill.charAt(0).toUpperCase() + skill.slice(1)}</StatLabel>
-                  <StatValue style={{ color: bonus > 0 ? '#4CAF50' : '#FF5722' }}>
-                    {bonus > 0 ? '+' : ''}{bonus}%
+                  <StatValue style={{ color: Number(value) > 0 ? '#4CAF50' : '#FF5722' }}>
+                    {Number(value) > 0 ? '+' : ''}{String(value)}
                   </StatValue>
                 </StatRow>
               ))}
@@ -173,12 +173,12 @@ const ConfirmationScreen: React.FC<ConfirmationScreenProps> = ({
                 <StatValue>{selectedStartupType.title}</StatValue>
               </StatRow>
               <StatRow>
-                <StatLabel>Funding Potential</StatLabel>
-                <StatValue>{selectedStartupType.funding}</StatValue>
+                <StatLabel>Initial Valuation</StatLabel>
+                <StatValue>${selectedStartupType.stats.finances.valuation.toLocaleString()}</StatValue>
               </StatRow>
               <StatRow>
-                <StatLabel>Market Hype</StatLabel>
-                <StatValue>{selectedStartupType.hype}</StatValue>
+                <StatLabel>Innovation Level</StatLabel>
+                <StatValue>{selectedStartupType.stats.product.innovation}/100</StatValue>
               </StatRow>
             </StatsGrid>
           </StatsSection>
@@ -191,12 +191,12 @@ const ConfirmationScreen: React.FC<ConfirmationScreenProps> = ({
                 <StatValue>{selectedDistrict.title}</StatValue>
               </StatRow>
               <StatRow>
-                <StatLabel>Living Costs</StatLabel>
-                <StatValue>{selectedDistrict.rent}</StatValue>
+                <StatLabel>Monthly Rent</StatLabel>
+                <StatValue>${selectedDistrict.stats.finances.burnRate.toLocaleString()}</StatValue>
               </StatRow>
               <StatRow>
-                <StatLabel>Networking</StatLabel>
-                <StatValue>{selectedDistrict.networking}</StatValue>
+                <StatLabel>Networking Bonus</StatLabel>
+                <StatValue>+{selectedDistrict.stats.skills?.networking || 0}</StatValue>
               </StatRow>
             </StatsGrid>
           </StatsSection>

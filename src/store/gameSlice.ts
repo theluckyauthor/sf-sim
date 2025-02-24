@@ -5,8 +5,7 @@ import {
   FounderState,
   StartupState,
   LocationState,
-  RelationshipStats,
-  GameEvent 
+  RelationshipStats
 } from '../types/stats';
 
 const initialState: GameState = {

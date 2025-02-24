@@ -54,12 +54,6 @@ const Section = styled.div`
   margin-bottom: 30px;
 `;
 
-const Title = styled.h2`
-  font-size: 32px;
-  margin-bottom: 30px;
-  color: #4CAF50;
-`;
-
 const Label = styled.label`
   display: block;
   margin-bottom: 10px;
@@ -148,52 +142,6 @@ const OptionTitle = styled.div`
 const OptionDescription = styled.div`
   font-size: 14px;
   color: #aaa;
-`;
-
-const StatsPreview = styled.div`
-  background: #1a1a1a;
-  border-radius: 8px;
-  padding: 20px;
-  margin-top: 20px;
-  margin-bottom: 30px;
-`;
-
-const StatsSection = styled.div`
-  margin-bottom: 15px;
-  
-  &:last-child {
-    margin-bottom: 0;
-  }
-`;
-
-const StatsSectionTitle = styled.h3`
-  color: #4CAF50;
-  font-size: 16px;
-  margin-bottom: 10px;
-  padding-bottom: 5px;
-  border-bottom: 1px solid #333;
-`;
-
-const StatsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-`;
-
-const StatRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  font-size: 14px;
-`;
-
-const StatLabel = styled.span`
-  color: #888;
-`;
-
-const StatValue = styled.span`
-  color: #4CAF50;
-  font-weight: bold;
 `;
 
 const backgrounds = [
@@ -710,16 +658,27 @@ const CreateFounder: React.FC = () => {
       background: formData.background,
       catchphrase: formData.catchphrase,
       role: formData.role,
+      wellBeing: {
+        health: selectedBackground.stats.wellBeing.health + (selectedDistrict.stats.wellBeing?.health || 0),
+        energy: selectedBackground.stats.wellBeing.energy,
+        stress: selectedBackground.stats.wellBeing.stress + (selectedDistrict.stats.wellBeing?.stress || 0)
+      },
       skills: {
-        technical: 0,
-        leadership: 0,
-        networking: 0,
-        fundraising: 0,
-        marketing: 0,
-        execution: 0,
-        growth: 0,
-        sustainability: 0
-      }
+        technical: selectedBackground.stats.skills.technical + (selectedRole.stats.skills.technical || 0),
+        leadership: selectedBackground.stats.skills.leadership + (selectedRole.stats.skills.leadership || 0),
+        networking: selectedBackground.stats.skills.networking + 
+                   (selectedRole.stats.skills.networking || 0) + 
+                   (selectedDistrict.stats.skills?.networking || 0),
+        fundraising: selectedBackground.stats.skills.fundraising + 
+                    (selectedRole.stats.skills.fundraising || 0) +
+                    (selectedDistrict.stats.skills?.fundraising || 0),
+        marketing: selectedRole.stats.skills.marketing || 0,
+        execution: selectedRole.stats.skills.execution || 0,
+        growth: selectedRole.stats.skills.growth || 0,
+        sustainability: selectedRole.stats.skills.sustainability || 0
+      },
+      reputation: selectedBackground.stats.reputation,
+      finances: selectedBackground.stats.finances
     }));
     dispatch(updateStartup(startupState));
     dispatch(updateLocation(locationState));

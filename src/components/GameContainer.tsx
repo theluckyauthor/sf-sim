@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import StatusPanel from './StatusPanel';
 import TextPanel from './TextPanel';
@@ -18,8 +17,6 @@ const Container = styled.div`
 `;
 
 const GameContainer: React.FC = () => {
-  const gameState = useSelector((state: RootState) => state.game);
-
   return (
     <Container>
       <StatusPanel />
