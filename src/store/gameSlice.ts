@@ -2,144 +2,108 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { 
   GameState,
   GamePhase,
-  FounderState,
-  StartupState,
-  LocationState,
-  RelationshipStats
+  FounderStats,
+  CompanyStats,
+  LocationStats,
+  District
 } from '../types/stats';
 
-const initialState: GameState = {
+interface HistoryEntry {
+  timestamp: string;
+  title: string;
+  description: string;
+  consequences: {
+    text: string;
+    type: 'positive' | 'negative' | 'neutral';
+  }[];
+}
+
+interface ExtendedGameState extends GameState {
+  history: HistoryEntry[];
+}
+
+const initialState: ExtendedGameState = {
   founder: {
-    name: '',
-    background: '',
-    role: '',
-    catchphrase: '',
-    wellBeing: {
-      health: 100,
-      energy: 100,
-      stress: 0
-    },
-    skills: {
-      technical: 0,
-      leadership: 0,
-      networking: 0,
-      fundraising: 0,
-      marketing: 0,
-      execution: 0,
-      growth: 0,
-      sustainability: 0
-    },
-    reputation: {
-      personal: 0,
-      network: 0
-    },
-    finances: {
-      personalFunds: 0,
-      salary: 0,
-      investments: 0
-    }
+    health: 100,
+    energy: 100,
+    technical: 50,
+    business: 50,
+    leadership: 50,
+    cash: 10000,
+    reputation: 50
   },
-  startup: {
-    name: '',
-    type: '',
-    stage: 'ideation',
-    product: {
-      mvpProgress: 0,
-      quality: 0,
-      innovation: 0,
-      development: 0,
-      marketFit: 0
-    },
-    team: {
-      size: 1,
-      morale: 100,
-      productivity: 0,
-      culture: 0
-    },
-    finances: {
-      cash: 0,
-      revenue: 0,
-      burnRate: 0,
-      valuation: 0
-    },
-    market: {
-      userTraction: 0,
-      brandReputation: 0,
-      socialPresence: 0,
-      marketFit: 0,
-      userGrowth: 0
-    },
-    milestones: {
-      activeMilestones: [],
-      completedMilestones: [],
-      achievements: []
-    }
+  company: {
+    productQuality: 0,
+    marketFit: 0,
+    userGrowth: 0,
+    revenue: 0,
+    runway: 12,
+    valuation: 0,
+    teamSize: 1,
+    teamMorale: 100,
+    talent: 50
   },
   location: {
-    district: '',
+    district: District.SOMA,
     type: 'home',
-    rent: '',
-    networkingPotential: ''
+    networkingScore: 0
   },
-  relationships: {
-    investors: 0,
-    employees: 0,
-    customers: 0,
-    community: 0
-  },
-  currentPhase: GamePhase.SETTLING_IN,
-  time: {
+  progress: {
+    phase: GamePhase.SETTLING_IN,
     day: 1,
     month: 1,
-    year: 2024
-  }
+    year: 2024,
+    completedEvents: [],
+    achievements: []
+  },
+
+  history: []
 };
 
 const gameSlice = createSlice({
   name: 'game',
   initialState,
   reducers: {
-    updateFounder(state, action: PayloadAction<Partial<FounderState>>) {
+    updateFounder: (state, action: PayloadAction<Partial<FounderStats>>) => {
       state.founder = { ...state.founder, ...action.payload };
     },
-    updateStartup(state, action: PayloadAction<Partial<StartupState>>) {
-      state.startup = { ...state.startup, ...action.payload };
+    updateCompany: (state, action: PayloadAction<Partial<CompanyStats>>) => {
+      state.company = { ...state.company, ...action.payload };
     },
-    updateLocation(state, action: PayloadAction<Partial<LocationState>>) {
+    updateLocation: (state, action: PayloadAction<Partial<LocationStats>>) => {
       state.location = { ...state.location, ...action.payload };
-    },
-    updateRelationships(state, action: PayloadAction<Partial<RelationshipStats>>) {
-      state.relationships = { ...state.relationships, ...action.payload };
     },
     advancePhase(state) {
       const phases = Object.values(GamePhase);
-      const currentIndex = phases.indexOf(state.currentPhase);
+      const currentIndex = phases.indexOf(state.progress.phase);
       if (currentIndex < phases.length - 1) {
-        state.currentPhase = phases[currentIndex + 1];
+        state.progress.phase = phases[currentIndex + 1];
       }
     },
     advanceTime(state) {
-      // Simple time advancement logic
-      state.time.day += 1;
-      if (state.time.day > 30) {
-        state.time.day = 1;
-        state.time.month += 1;
-        if (state.time.month > 12) {
-          state.time.month = 1;
-          state.time.year += 1;
+      state.progress.day += 1;
+      if (state.progress.day > 30) {
+        state.progress.day = 1;
+        state.progress.month += 1;
+        if (state.progress.month > 12) {
+          state.progress.month = 1;
+          state.progress.year += 1;
         }
       }
+    },
+    addHistoryEntry(state, action: PayloadAction<HistoryEntry>) {
+      state.history.unshift(action.payload); // Add new entries at the beginning
     }
   }
 });
 
 export const { 
   updateFounder,
-  updateStartup,
+  updateCompany,
   updateLocation,
-  updateRelationships,
   advancePhase,
-  advanceTime
+  advanceTime,
+  addHistoryEntry
 } = gameSlice.actions;
 
 export default gameSlice.reducer; 

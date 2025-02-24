@@ -10,13 +10,16 @@ import { GameEvent } from '../types/stats';
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 250px 1fr 250px;
+  grid-template-columns: 400px 1fr 400px;
   grid-template-rows: 1fr;
   gap: 20px;
   height: 100vh;
   padding: 20px;
   background-color: #1a1a1a;
   color: #ffffff;
+  & > * {
+    min-width: 0; // Prevent grid items from overflowing
+  }
 `;
 
 const GameContainer: React.FC = () => {
@@ -26,9 +29,9 @@ const GameContainer: React.FC = () => {
 
   useEffect(() => {
     // Get next event when phase changes or after handling a choice
-    const nextEvent = getNextEvent(gameState.currentPhase, usedEventIds, gameState);
+    const nextEvent = getNextEvent(gameState.progress.phase, usedEventIds, gameState);
     setCurrentEvent(nextEvent);
-  }, [gameState.currentPhase, usedEventIds]);
+  }, [gameState.progress.phase, usedEventIds]);
 
   return (
     <Container>

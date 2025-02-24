@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 
 const Container = styled.div`
   background-color: #2a2a2a;
@@ -50,12 +52,12 @@ const EventDescription = styled.div`
   line-height: 1.4;
 `;
 
-const Consequence = styled.div`
+const Consequence = styled.div<{ color: string }>`
   font-size: 13px;
-  color: ${props => props.color || '#888'};
+  color: ${props => props.color};
   margin-top: 6px;
   padding-left: 12px;
-  border-left: 2px solid ${props => props.color || '#888'};
+  border-left: 2px solid ${props => props.color};
 `;
 
 interface HistoryEntry {
@@ -69,18 +71,7 @@ interface HistoryEntry {
 }
 
 const HistoryLog: React.FC = () => {
-  // This would typically come from your game state
-  const historyEntries: HistoryEntry[] = [
-    {
-      timestamp: 'Day 1',
-      title: 'Started Your Journey',
-      description: 'You founded your startup and set up base in your chosen district.',
-      consequences: [
-        { text: 'Initial funds secured', type: 'positive' },
-        { text: 'Office space rented', type: 'neutral' }
-      ]
-    }
-  ];
+  const historyEntries = useSelector((state: RootState) => state.game.history) as HistoryEntry[];
 
   const getConsequenceColor = (type: 'positive' | 'negative' | 'neutral') => {
     switch (type) {
