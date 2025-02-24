@@ -1,0 +1,118 @@
+{
+    "alternative_endings": [
+        {
+            "id": "community_champion",
+            "title": "Community Champion 🌟",
+            "description": "While your startup may not have hit the magical 1M MRR, you've built something far more valuable - a thriving community that changes lives.",
+            "emoji": "👥💪",
+            "conditions": {
+                "user_satisfaction": 95,
+                "active_community_members": 100000,
+                "positive_reviews": 10000,
+                "social_impact_score": 90
+            },
+            "ending_message": "Congratulations! You've created more than just a business - you've built a movement. Your platform has become a beacon of hope and support for 100,000 active community members. Your user satisfaction rate of 95% and thousands of heartfelt testimonials show that you've made a real difference in people's lives. While you may not have reached 1M MRR, you've achieved something perhaps even more meaningful: you've created a sustainable platform that genuinely helps people and brings positive change to the world. Your journey proves that success isn't just measured in dollars, but in lives touched and communities strengthened.",
+            "achievements": [
+                "Community Builder Award",
+                "Social Impact Excellence",
+                "People's Choice Platform",
+                "Most Trusted Brand in Category"
+            ]
+        },
+        {
+            "id": "innovation_pioneer",
+            "title": "Innovation Pioneer 🚀",
+            "description": "Your startup has become a technological breakthrough that revolutionizes your industry, leading to acquisition by a major tech company.",
+            "emoji": "💡🔬",
+            "conditions": {
+                "innovation_score": 95,
+                "patent_count": 3,
+                "tech_awards": 2,
+                "industry_recognition": "high"
+            },
+            "ending_message": "Incredible achievement! While the path to 1M MRR was not your destiny, you've accomplished something extraordinary - your innovative technology has caught the attention of the entire industry. With 3 groundbreaking patents and multiple technology awards, your startup has become a pioneer in its field. A major tech company has recognized the revolutionary potential of your work and acquired your startup for $50M, ensuring your innovation will impact millions of users worldwide. Your journey proves that sometimes the biggest wins come not from revenue metrics, but from pushing the boundaries of what's possible.",
+            "achievements": [
+                "Tech Innovation Award",
+                "Industry Disruptor of the Year",
+                "Patent Portfolio Excellence",
+                "Successful Exit Achievement"
+            ]
+        },
+        {
+            "id": "viral_sensation",
+            "title": "Viral Sensation 🌐",
+            "description": "Your startup unexpectedly goes viral, becoming an overnight cultural phenomenon.",
+            "emoji": "📱🔥",
+            "conditions": {
+                "social_media_mentions": 1000000,
+                "viral_content_pieces": 5,
+                "media_coverage": "extensive",
+                "trend_duration": "2_weeks"
+            },
+            "ending_message": "In a twist of fate, your startup has become the internet's latest obsession! Your platform has generated millions of memes, TikTok trends, and social media conversations. While this massive attention hasn't directly translated to your target 1M MRR, you've gained invaluable brand recognition and a cultural impact that many companies only dream of. Your journey shows that sometimes success comes in unexpected viral waves!",
+            "achievements": [
+                "Viral Marketing Excellence",
+                "Social Media Phenomenon",
+                "Cultural Impact Award",
+                "Trending Topic Champion"
+            ]
+        },
+        {
+            "id": "pivot_success",
+            "title": "Successful Pivot Master 🔄",
+            "description": "Facing challenges, you successfully pivoted your business model into an unexpected but profitable direction.",
+            "emoji": "🎯💫",
+            "conditions": {
+                "pivot_execution": 90,
+                "new_market_fit": "excellent",
+                "team_adaptation": "high",
+                "customer_retention": 80
+            },
+            "ending_message": "When your original business model hit roadblocks, you showed remarkable adaptability! Instead of giving up, you transformed your startup into something even better. Your successful pivot not only saved the company but opened up exciting new opportunities. While you haven't reached 1M MRR yet, you're now on a much stronger trajectory with a more sustainable business model.",
+            "achievements": [
+                "Pivot Excellence Award",
+                "Adaptability Champion",
+                "Strategic Vision Prize",
+                "Market Fit Mastery"
+            ]
+        },
+        {
+            "id": "market_crash",
+            "title": "Market Meltdown Survivor 📉",
+            "description": "An unexpected market crash severely impacts your industry, forcing you to make tough decisions.",
+            "emoji": "💔💼",
+            "conditions": {
+                "market_decline": 60,
+                "industry_layoffs": "widespread",
+                "funding_environment": "frozen",
+                "burn_rate": "critical"
+            },
+            "ending_message": "The market crash hit your industry hard, and despite your best efforts, the path to 1M MRR became impossible in this environment. You've had to make difficult decisions about downsizing and restructuring. However, your resilience in navigating these challenging times has earned respect from peers and investors. Sometimes success means surviving when others couldn't.",
+            "achievements": [
+                "Crisis Management Expert",
+                "Resilience Under Pressure",
+                "Team Preservation Award",
+                "Strategic Downsizing Master"
+            ]
+        },
+        {
+            "id": "burnout_breakdown",
+            "title": "Founder Burnout 🏥",
+            "description": "The relentless pursuit of growth takes its toll, leading to severe founder burnout and necessary recalibration.",
+            "emoji": "😫💊",
+            "conditions": {
+                "founder_health": "critical",
+                "work_life_balance": "poor",
+                "stress_levels": "extreme",
+                "team_morale": "low"
+            },
+            "ending_message": "The journey to 1M MRR came at a heavy personal cost. Constant stress, sleepless nights, and neglected relationships led to severe burnout. This ending isn't about failure, but about recognizing that success shouldn't come at the expense of health and happiness. You've learned valuable lessons about sustainable entrepreneurship and the importance of balance.",
+            "achievements": [
+                "Self-Care Awakening",
+                "Work-Life Balance Reset",
+                "Mental Health Advocate",
+                "Personal Growth Champion"
+            ]
+        }
+    ]
+} 

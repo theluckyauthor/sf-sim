@@ -1,0 +1,11 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+
+# Your rule content
+
+- You can @ files here
+- You can use markdown but dont have to
+Always check the [stats.ts](mdc:sf-sim/src/types/stats.ts) file as reference to what that type has and what can be modified by events
