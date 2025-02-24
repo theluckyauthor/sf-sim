@@ -1,6 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { Choice } from '../types/game';
+import { useDispatch, useSelector } from 'react-redux';
+import { 
+  advancePhase, 
+  updateFounder, 
+  updateStartup, 
+  updateRelationships,
+  advanceTime 
+} from '../store/gameSlice';
+import { GameEventChoice, GamePhase } from '../types/stats';
+import { getNextEvent, checkGameOver, checkPhaseAdvancement } from '../events';
+import { RootState } from '../store/store';
 
 const Panel = styled.div`
   background-color: #2a2a2a;
@@ -54,13 +64,58 @@ const ChoiceButton = styled.button`
 
 interface TextPanelProps {
   currentEvent?: {
+    id: string;
     title: string;
     description: string;
-    choices: Choice[];
+    choices: GameEventChoice[];
   };
 }
 
 const TextPanel: React.FC<TextPanelProps> = ({ currentEvent }) => {
+  const dispatch = useDispatch();
+  const gameState = useSelector((state: RootState) => state.game);
+  const [usedEventIds, setUsedEventIds] = React.useState<string[]>([]);
+
+  const handleStartJourney = () => {
+    dispatch(advancePhase());
+  };
+
+  const handleChoiceClick = (choice: GameEventChoice) => {
+    const { impact } = choice;
+    
+    // Apply impacts to different aspects of the game state
+    if (impact.founder) {
+      dispatch(updateFounder(impact.founder));
+    }
+    if (impact.startup) {
+      dispatch(updateStartup(impact.startup));
+    }
+    if (impact.relationships) {
+      dispatch(updateRelationships(impact.relationships));
+    }
+    
+    // Advance time
+    dispatch(advanceTime());
+
+    // Check game over conditions
+    const gameOverReason = checkGameOver(gameState);
+    if (gameOverReason) {
+      alert(gameOverReason);
+      return;
+    }
+
+    // Check if we can advance to next phase
+    if (checkPhaseAdvancement(gameState.currentPhase, gameState)) {
+      dispatch(advancePhase());
+      setUsedEventIds([]); // Reset used events for new phase
+    } else {
+      // Add current event to used events
+      if (currentEvent) {
+        setUsedEventIds(prev => [...prev, currentEvent.id]);
+      }
+    }
+  };
+
   if (!currentEvent) {
     return (
       <Panel>
@@ -71,7 +126,7 @@ const TextPanel: React.FC<TextPanelProps> = ({ currentEvent }) => {
           Are you ready to begin?
         </Description>
         <ChoicesContainer>
-          <ChoiceButton>Start Your Journey</ChoiceButton>
+          <ChoiceButton onClick={handleStartJourney}>Start Your Journey</ChoiceButton>
         </ChoicesContainer>
       </Panel>
     );
@@ -83,7 +138,10 @@ const TextPanel: React.FC<TextPanelProps> = ({ currentEvent }) => {
       <Description>{currentEvent.description}</Description>
       <ChoicesContainer>
         {currentEvent.choices.map((choice) => (
-          <ChoiceButton key={choice.id}>
+          <ChoiceButton 
+            key={choice.id}
+            onClick={() => handleChoiceClick(choice)}
+          >
             {choice.text}
           </ChoiceButton>
         ))}

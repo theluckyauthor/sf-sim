@@ -1,3 +1,9 @@
+import { GameEvent, GamePhase } from '../types/stats';
+import { morningRoutine } from './personal/wellness';
+import { initialTeamPlanning } from './team/hiring';
+import { initialFundingStrategy } from './funding/pitches';
+import { productBrainstorming } from './product/development';
+
 // Networking Events
 export * from './networking/meetups';
 export * from './networking/pitching';
@@ -302,5 +308,85 @@ export const PHASE_PROGRESSION = {
       'product.marketShare': 10,
       'business.runway': 12
     }
+  }
+};
+
+// Map of events by phase
+const eventsByPhase: Record<GamePhase, GameEvent[]> = {
+  [GamePhase.SETTLING_IN]: [
+    morningRoutine,
+    initialTeamPlanning,
+    initialFundingStrategy
+  ],
+  [GamePhase.IDEATION]: [
+    productBrainstorming
+  ],
+  [GamePhase.BOOTSTRAPPING]: [],
+  [GamePhase.FUNDRAISING]: [],
+  [GamePhase.SCALING]: []
+};
+
+// Check if game is over based on stats
+export const checkGameOver = (stats: any) => {
+  if (stats.startup.finances.cash <= -100000) {
+    return GAME_OVER_CONDITIONS.BANKRUPTCY;
+  }
+  if (stats.founder.wellBeing.stress >= 100) {
+    return GAME_OVER_CONDITIONS.FOUNDER_BURNOUT;
+  }
+  return null;
+};
+
+// Get next random event for the current phase
+export const getNextEvent = (
+  currentPhase: GamePhase,
+  usedEventIds: string[],
+  stats: any
+): GameEvent | null => {
+  const availableEvents = eventsByPhase[currentPhase].filter(
+    event => !usedEventIds.includes(event.id) && checkEventConditions(event, stats)
+  );
+
+  if (availableEvents.length === 0) {
+    return null;
+  }
+
+  const randomIndex = Math.floor(Math.random() * availableEvents.length);
+  return availableEvents[randomIndex];
+};
+
+// Check if event conditions are met
+const checkEventConditions = (event: GameEvent, stats: any): boolean => {
+  if (!event.conditions) return true;
+
+  const { minimumStats } = event.conditions;
+  if (!minimumStats) return true;
+
+  // Check each stat requirement
+  for (const [statPath, requirements] of Object.entries(minimumStats)) {
+    const currentStats = statPath.split('.').reduce((obj, key) => obj[key], stats);
+    for (const [stat, minValue] of Object.entries(requirements)) {
+      if (currentStats[stat] < minValue) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+};
+
+// Check if ready to advance to next phase
+export const checkPhaseAdvancement = (currentPhase: GamePhase, stats: any): boolean => {
+  switch (currentPhase) {
+    case GamePhase.SETTLING_IN:
+      return stats.founder.skills.execution >= 10;
+    case GamePhase.IDEATION:
+      return stats.startup.product.mvpProgress >= 50;
+    case GamePhase.BOOTSTRAPPING:
+      return stats.startup.finances.revenue >= 10000;
+    case GamePhase.FUNDRAISING:
+      return stats.startup.finances.valuation >= 1000000;
+    default:
+      return false;
   }
 }; 

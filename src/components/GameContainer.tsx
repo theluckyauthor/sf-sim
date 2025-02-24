@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import StatusPanel from './StatusPanel';
 import TextPanel from './TextPanel';
-import MapView from './MapView';
+import HistoryLog from './HistoryLog';
+import { getNextEvent } from '../events';
+import { GameEvent } from '../types/stats';
 
 const Container = styled.div`
   display: grid;
@@ -17,11 +20,21 @@ const Container = styled.div`
 `;
 
 const GameContainer: React.FC = () => {
+  const gameState = useSelector((state: RootState) => state.game);
+  const [currentEvent, setCurrentEvent] = useState<GameEvent | null>(null);
+  const [usedEventIds, setUsedEventIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    // Get next event when phase changes or after handling a choice
+    const nextEvent = getNextEvent(gameState.currentPhase, usedEventIds, gameState);
+    setCurrentEvent(nextEvent);
+  }, [gameState.currentPhase, usedEventIds]);
+
   return (
     <Container>
       <StatusPanel />
-      <TextPanel />
-      <MapView />
+      <TextPanel currentEvent={currentEvent || undefined} />
+      <HistoryLog />
     </Container>
   );
 };
