@@ -5,7 +5,9 @@ import styled from 'styled-components';
 import { 
   updateFounder,
   updateCompany,
-  updateLocation
+  updateLocation,
+  updateFounderProfile,
+  updateStartupProfile
 } from '../store/gameSlice';
 import ConfirmationScreen from './ConfirmationScreen';
 import { FounderStats, CompanyStats, LocationStats, District } from '../types/stats';
@@ -483,10 +485,26 @@ const CreateFounder: React.FC = () => {
       networkingScore: selectedDistrict.stats.networkingScore ?? 0
     };
 
+    // Initialize founder profile
+    const founderProfile = {
+      founderName: formData.founderName,
+      background: selectedBackground.id,
+      role: selectedRole.id
+    };
+
+    // Initialize startup profile
+    const startupProfile = {
+      startupName: formData.startupName,
+      startupType: selectedStartupType.id,
+      catchphrase: formData.catchphrase
+    };
+
     // Update the game state
     dispatch(updateFounder(founderState));
     dispatch(updateCompany(companyState));
     dispatch(updateLocation(locationState));
+    dispatch(updateFounderProfile(founderProfile));
+    dispatch(updateStartupProfile(startupProfile));
     
     navigate('/game');
   };

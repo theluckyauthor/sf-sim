@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
-import { FounderStats, CompanyStats, LocationStats, GameProgress } from '../types/stats';
+import { FounderStats, CompanyStats, LocationStats, GameProgress, FounderProfile, StartupProfile } from '../types/stats';
 
 const Panel = styled.div`
   background-color: #2a2a2a;
@@ -82,15 +82,35 @@ const Grid = styled.div`
   gap: 15px;
 `;
 
+const ProfileHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 10px;
+`;
+
+const ProfileName = styled.h2`
+  font-size: 20px;
+  margin: 0;
+  color: white;
+`;
+
+const ProfileSubtitle = styled.div`
+  font-size: 14px;
+  color: #888;
+`;
+
 interface GameState {
   founder: FounderStats;
   company: CompanyStats;
   location: LocationStats;
   progress: GameProgress;
+  founderProfile: FounderProfile;
+  startupProfile: StartupProfile;
 }
 
 const StatusPanel: React.FC = () => {
-  const { founder, company, location, progress } = useSelector((state: RootState) => state.game as GameState);
+  const { founder, company, location, progress, founderProfile, startupProfile } = useSelector((state: RootState) => state.game as GameState);
 
   const formatCash = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -108,20 +128,76 @@ const StatusPanel: React.FC = () => {
     });
   };
 
+  // Format startup type for display
+  const formatStartupType = (type: string) => {
+    switch(type) {
+      case 'ai_startup': return 'AI/ML Startup';
+      case 'saas_startup': return 'B2B SaaS';
+      case 'crypto_startup': return 'Web3/Crypto';
+      case 'social_startup': return 'Social Impact';
+      default: return type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    }
+  };
+
+  // Format founder background for display
+  const formatBackground = (background: string) => {
+    switch(background) {
+      case 'stanford_dropout': return 'Stanford Dropout';
+      case 'bootcamp_grad': return 'Bootcamp Graduate';
+      case 'tech_veteran': return 'Big Tech Veteran';
+      case 'indie_hacker': return 'Indie Hacker';
+      default: return background.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    }
+  };
+
+  // Format founder role for display
+  const formatRole = (role: string) => {
+    switch(role) {
+      case 'technical_founder': return 'Technical Founder';
+      case 'business_founder': return 'Business Founder';
+      case 'visionary_founder': return 'Visionary Founder';
+      case 'growth_founder': return 'Growth Hacker';
+      default: return role.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    }
+  };
+
   return (
     <Panel>
       <Section>
-        <SectionTitle>👤 Founder Profile</SectionTitle>
+        <ProfileHeader>
+          <ProfileName>{startupProfile.startupName}</ProfileName>
+          <ProfileSubtitle>{formatStartupType(startupProfile.startupType)}</ProfileSubtitle>
+        </ProfileHeader>
+      </Section>
+
+      <Section>
+        <SectionTitle>👤 Founder: {founderProfile.founderName}</SectionTitle>
+        <ProfileSubtitle>{formatBackground(founderProfile.background)} • {formatRole(founderProfile.role)}</ProfileSubtitle>
         <Grid>
           <StatItem>
             <Label>Health</Label>
-            <Value>{founder.health}%</Value>
-            <ProgressBar value={founder.health} color="#4CAF50" />
+            <Value color={founder.health <= 30 ? "#FF5722" : "#4CAF50"}>{founder.health}%</Value>
+            <ProgressBar value={founder.health} color={founder.health <= 30 ? "#FF5722" : "#4CAF50"} />
           </StatItem>
           <StatItem>
             <Label>Energy</Label>
-            <Value>{founder.energy}%</Value>
-            <ProgressBar value={founder.energy} color="#2196F3" />
+            <Value color={founder.energy <= 30 ? "#FF5722" : "#2196F3"}>{founder.energy}%</Value>
+            <ProgressBar value={founder.energy} color={founder.energy <= 30 ? "#FF5722" : "#2196F3"} />
+          </StatItem>
+          <StatItem>
+            <Label>Technical</Label>
+            <Value>{founder.technical}%</Value>
+            <ProgressBar value={founder.technical} color="#FF9800" />
+          </StatItem>
+          <StatItem>
+            <Label>Business</Label>
+            <Value>{founder.business}%</Value>
+            <ProgressBar value={founder.business} color="#9C27B0" />
+          </StatItem>
+          <StatItem>
+            <Label>Leadership</Label>
+            <Value>{founder.leadership}%</Value>
+            <ProgressBar value={founder.leadership} color="#E91E63" />
           </StatItem>
           <StatItem>
             <Label>Cash</Label>
@@ -136,7 +212,7 @@ const StatusPanel: React.FC = () => {
       </Section>
 
       <Section>
-        <SectionTitle>🚀 Startup</SectionTitle>
+        <SectionTitle>🚀 Company Stats</SectionTitle>
         <Grid>
           <StatItem>
             <Label>Product Quality</Label>
@@ -149,13 +225,35 @@ const StatusPanel: React.FC = () => {
             <ProgressBar value={company.marketFit} color="#4CAF50" />
           </StatItem>
           <StatItem>
+            <Label>User Growth</Label>
+            <Value>{company.userGrowth}%</Value>
+            <ProgressBar value={company.userGrowth} color="#FF9800" />
+          </StatItem>
+          <StatItem>
+            <Label>Revenue</Label>
+            <Value color="#4CAF50">{formatCash(company.revenue)}</Value>
+          </StatItem>
+          <StatItem>
+            <Label>Runway</Label>
+            <Value color={company.runway <= 3 ? "#FF5722" : "#4CAF50"}>{company.runway} months</Value>
+          </StatItem>
+          <StatItem>
             <Label>Valuation</Label>
             <Value color="#4CAF50">{formatCash(company.valuation)}</Value>
+          </StatItem>
+          <StatItem>
+            <Label>Team Size</Label>
+            <Value>{company.teamSize}</Value>
           </StatItem>
           <StatItem>
             <Label>Team Morale</Label>
             <Value>{company.teamMorale}%</Value>
             <ProgressBar value={company.teamMorale} color="#FF5722" />
+          </StatItem>
+          <StatItem>
+            <Label>Talent</Label>
+            <Value>{company.talent}%</Value>
+            <ProgressBar value={company.talent} color="#E91E63" />
           </StatItem>
         </Grid>
       </Section>

@@ -30,6 +30,20 @@ import { foggyMorning, missionWeekend, somaTechScene } from './sanfran/culture';
 // Random Events
 import { viralTweet, serendipitousConnection } from './random/opportunities';
 
+// Special Events
+import { 
+  burnoutCrisis, 
+  cashCrisis, 
+  teamRebellion, 
+  viralProductSuccess, 
+  acquisitionOffer,
+  naturalDisaster,
+  competitorBankruptcy,
+  marketCrash,
+  celebrityEndorsement,
+  keyEmployeePoached
+} from './special/stat_triggered';
+
 // Export all event modules
 export * from './networking/meetups';
 export * from './networking/pitching';
@@ -47,6 +61,7 @@ export * from './personal/balance';
 export * from './market/launch';
 export * from './random/opportunities';
 export * from './sanfran/culture';
+export * from './special/stat_triggered';
 
 // Collect all events
 const allEvents: GameEvent[] = [
@@ -96,7 +111,19 @@ const allEvents: GameEvent[] = [
 
   // Random Events
   viralTweet,
-  serendipitousConnection
+  serendipitousConnection,
+  
+  // Special Events
+  burnoutCrisis,
+  cashCrisis,
+  teamRebellion,
+  viralProductSuccess,
+  acquisitionOffer,
+  naturalDisaster,
+  competitorBankruptcy,
+  marketCrash,
+  celebrityEndorsement,
+  keyEmployeePoached
 ];
 
 // Event Categories
@@ -377,51 +404,51 @@ export const PHASE_PROGRESSION: Record<GamePhase, {
     revenue: 0,
     minStats: {
       founder: {
-        technical: 20,
-        business: 20
+        technical: 15,
+        business: 15
       }
     }
   },
   [GamePhase.IDEATION]: {
-    revenue: 1000,
+    revenue: 500,
     minStats: {
       founder: {
-        technical: 30
+        technical: 20
       },
       company: {
-        productQuality: 50
+        productQuality: 30
       }
     }
   },
   [GamePhase.BOOTSTRAPPING]: {
-    revenue: 10000,
+    revenue: 5000,
     minStats: {
       company: {
-        teamSize: 5,
-        userGrowth: 40,
-        runway: 6
+        teamSize: 3,
+        userGrowth: 30,
+        runway: 3
       }
     }
   },
   [GamePhase.FUNDRAISING]: {
-    revenue: 100000,
+    revenue: 50000,
     minStats: {
       founder: {
-        business: 60
+        business: 40
       },
       company: {
-        valuation: 1000000,
-        teamMorale: 70
+        valuation: 500000,
+        teamMorale: 50
       }
     }
   },
   [GamePhase.SCALING]: {
-    revenue: 500000,
+    revenue: 200000,
     minStats: {
       company: {
-        teamSize: 20,
-        marketFit: 10,
-        runway: 12
+        teamSize: 10,
+        marketFit: 40,
+        runway: 6
       }
     }
   }
@@ -438,7 +465,11 @@ export const eventsByPhase: Record<GamePhase, GameEvent[]> = {
     initialMarketAnalysis,
     foggyMorning,
     missionWeekend,
-    somaTechScene
+    somaTechScene,
+    viralTweet,
+    serendipitousConnection,
+    naturalDisaster,
+    marketCrash
   ],
   [GamePhase.IDEATION]: [
     productBrainstorming,
@@ -448,7 +479,14 @@ export const eventsByPhase: Record<GamePhase, GameEvent[]> = {
     potentialCofounder,
     cofounderAlignment,
     angelOutreach,
-    marketValidation
+    marketValidation,
+    viralTweet,
+    serendipitousConnection,
+    foggyMorning,
+    missionWeekend,
+    naturalDisaster,
+    marketCrash,
+    burnoutCrisis
   ],
   [GamePhase.BOOTSTRAPPING]: [
     mvpCrunch,
@@ -459,17 +497,62 @@ export const eventsByPhase: Record<GamePhase, GameEvent[]> = {
     acceleratorInterview,
     burnoutWarning,
     fridayNightChoice,
-    fundraisingWorkshop
+    fundraisingWorkshop,
+    viralTweet,
+    serendipitousConnection,
+    foggyMorning,
+    missionWeekend,
+    somaTechScene,
+    naturalDisaster,
+    marketCrash,
+    burnoutCrisis,
+    cashCrisis,
+    teamRebellion,
+    celebrityEndorsement
   ],
   [GamePhase.FUNDRAISING]: [
     seedPitch,
     executiveHiring,
-    wellnessChallenge
+    wellnessChallenge,
+    viralTweet,
+    serendipitousConnection,
+    foggyMorning,
+    missionWeekend,
+    somaTechScene,
+    teamConflict,
+    teamBuildingResponse,
+    burnoutWarning,
+    naturalDisaster,
+    marketCrash,
+    burnoutCrisis,
+    cashCrisis,
+    teamRebellion,
+    viralProductSuccess,
+    celebrityEndorsement,
+    competitorBankruptcy
   ],
   [GamePhase.SCALING]: [
     firstHire,
     viralTweet,
-    serendipitousConnection
+    serendipitousConnection,
+    foggyMorning,
+    missionWeekend,
+    somaTechScene,
+    teamConflict,
+    teamBuildingResponse,
+    burnoutWarning,
+    executiveHiring,
+    wellnessChallenge,
+    naturalDisaster,
+    marketCrash,
+    burnoutCrisis,
+    cashCrisis,
+    teamRebellion,
+    viralProductSuccess,
+    acquisitionOffer,
+    celebrityEndorsement,
+    competitorBankruptcy,
+    keyEmployeePoached
   ]
 };
 

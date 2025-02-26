@@ -14,7 +14,7 @@ Below is a sample technical design document for SF SIM. You can customize it fur
 ## 1. Overview
 
 **Purpose & Vision:**  
-SF SIM is a 2D, text-based web game that immerses players in the life of a San Francisco founder. The game focuses on narrative-driven gameplay with decision-making elements, simulating the ups and downs of startup life in a dynamic, real-world inspired cityscape. The goal is to provide an engaging simulation experience with flexibility for future expansion (e.g., adding more events, deeper simulation mechanics, or additional media elements).
+SF SIM is a 2D, text-based web game that immerses players in the life of a San Francisco founder. The game focuses on narrative-driven gameplay with decision-making elements, simulating the ups and downs of startup life in a dynamic, real-world inspired cityscape. The goal is to provide an engaging simulation experience with flexibility for future expansion (e.g., adding more events, deeper simulation mechanics, or additional media elements). It should be fun and have Silicon Valley tv show vibes. It is made to go viral on X
 
 **Target Audience:**  
 - Aspiring entrepreneurs  
@@ -31,7 +31,7 @@ SF SIM is a 2D, text-based web game that immerses players in the life of a San F
 - **Gameplay Mechanics:**  
   - **Decision Points:** Text-based prompts present choices that influence the narrative and game state.
   - **Random Events:** Simulated events (e.g., unexpected market changes, investor meetings) occur to keep the gameplay dynamic.
-  - **Resource Management:** The game tracks variables such as cash, reputation, stress, and time—affecting the founder’s journey.
+  - **Resource Management:** The game tracks variables such as defined in stats.ts —affecting the founder’s journey.
   - **2D Visual Elements:** While primarily text-based, simple 2D graphics (icons, minimal animations) depict key scenes, locations, and status changes.
 
 ### Flexibility
@@ -107,7 +107,7 @@ SF SIM is a 2D, text-based web game that immerses players in the life of a San F
    - Capture user inputs (keyboard/mouse clicks) for decision points.
 2. **Update Phase:**  
    - Process the selected decision; update game state variables (cash, stress, reputation, etc.).
-   - Trigger random events or narrative branches.
+   - Trigger random events or narrative branches. Different narrative branches depend on the state of the company and if they get into YC. 
 3. **Render Phase:**  
    - Update text panels and 2D visual elements on the canvas.
    - Provide feedback on state changes and next available actions.
@@ -130,7 +130,7 @@ SF SIM is a 2D, text-based web game that immerses players in the life of a San F
   - **Status Panel:** Displays current metrics (cash, reputation, stress, time).
   - **2D Map/Scene View:** A minimalist visual representation of San Francisco with icons for key locations (e.g., coworking spaces, VC offices).
 - **Navigation:**  
-  - User input primarily via keyboard and mouse clicks.
+  - User input primarily via mouse clicks.
   - Responsive design to cater to both desktop and mobile web browsers.
 
 ### UX Considerations
@@ -198,17 +198,19 @@ SF SIM is a 2D, text-based web game that immerses players in the life of a San F
 
 ## 10. Roadmap & Milestones
 
-1. **Prototype Phase (1-2 months):**  
+1. **Prototype Phase (v1):**  
    - Basic text-based narrative and state management.
    - Simple 2D rendering for key scenes.
    - Local storage for game state.
 
-2. **MVP Phase (3-4 months):**  
+2. **MVP Phase (v2):**  
    - Complete narrative with multiple decision branches.
+   - Chain of events (events that depend on other events)
+3. **API (v4)**
    - API integration for saving/loading game progress.
    - Initial user testing and feedback collection.
 
-3. **Feature Expansion (5+ months):**  
+4. **Feature Expansion (v4):**  
    - Enhanced visual assets and animations.
    - Additional events and narrative depth.
    - Consider multiplayer or social sharing features.
@@ -225,9 +227,6 @@ SF SIM is a 2D, text-based web game that immerses players in the life of a San F
   - Maintaining a balance between text-heavy narrative and interactive gameplay to keep users engaged.
 
 ---
-
-This design document outlines the major components and considerations for building SF SIM. It provides the foundation for your engineering team to understand the project’s scope, choose the appropriate technologies, and design the system architecture with flexibility in mind. As the project evolves, the document should be updated with more detailed specifications, prototypes, and testing plans.
-
-Feel free to modify any section as you gain more insights into the game’s requirements and player feedback.
+Add multiple good and bad endigs depending on the decisions of the user. I want it to be more narrative than stat micromanagement. Do not expand the stats.ts as i think that is the complexity i want.
 
 ---

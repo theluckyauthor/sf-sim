@@ -1,13 +1,16 @@
 import { GameEvent, GamePhase } from '../../types/stats';
+
 export const mvpCrunch: GameEvent = {
   "id": "mvp_crunch_001",
   "category": "product",
-  "title": "MVP Development Sprint",
-  "description": "Your team is close to completing the MVP. A potential investor wants to see it next week.",
+  "title": "MVP Development Crunch",
+  "description": "Your launch deadline is approaching, but there's still significant work to be done on your MVP. How will you handle this crunch time?",
   "conditions": {
-    "requiredPhase": GamePhase.BOOTSTRAPPING,    "minimumStats": {
-      "founder": {},
-      "company": {}
+    "requiredPhase": GamePhase.BOOTSTRAPPING,
+    "minimumStats": {
+      "company": {
+        "productQuality": 30
+      }
     }
   },
   "impact": {
@@ -16,20 +19,48 @@ export const mvpCrunch: GameEvent = {
   },
   "choices": [
     {
-      "id": "crunch_time",
-      "text": "Push the team to work extra hours to polish the MVP.",
-      "successChance": 75,
+      "id": "all_nighters",
+      "text": "Pull all-nighters to finish everything on time",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -40,
+          "health": -20,
+          "technical": 15
+        },
+        "company": {
+          "productQuality": 25,
+          "teamMorale": -15
+        }
       }
     },
     {
-      "id": "balanced_approach",
-      "text": "Maintain regular working hours but focus the team on essential features only.",
+      "id": "reduce_scope",
+      "text": "Reduce the scope to focus on core features only",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -15,
+          "business": 10
+        },
+        "company": {
+          "productQuality": 10,
+          "marketFit": 15,
+          "teamMorale": 5
+        }
+      }
+    },
+    {
+      "id": "delay_launch",
+      "text": "Delay the launch to ensure quality",
+      "impact": {
+        "founder": {
+          "energy": 5,
+          "reputation": -10
+        },
+        "company": {
+          "productQuality": 20,
+          "runway": -1,
+          "userGrowth": -10
+        }
       }
     }
   ]
@@ -38,12 +69,14 @@ export const mvpCrunch: GameEvent = {
 export const featurePrioritization: GameEvent = {
   "id": "feature_prioritization_001",
   "category": "product",
-  "title": "Feature Crossroads",
-  "description": "Your team needs to decide the next major feature for the MVP. User research shows demand for a crucial but complex core function, while market trends point to an exciting AI-powered add-on that could generate buzz.",
+  "title": "Feature Prioritization Challenge",
+  "description": "Users are requesting many new features, but you have limited resources. How will you prioritize development?",
   "conditions": {
-    "requiredPhase": GamePhase.BOOTSTRAPPING,    "minimumStats": {
-      "founder": {},
-      "company": {}
+    "requiredPhase": GamePhase.BOOTSTRAPPING,
+    "minimumStats": {
+      "company": {
+        "userGrowth": 20
+      }
     }
   },
   "impact": {
@@ -52,21 +85,49 @@ export const featurePrioritization: GameEvent = {
   },
   "choices": [
     {
-      "id": "core_function",
-      "text": "Focus on the core function: A robust authentication system with role-based access control.",
-      "successChance": 80,
+      "id": "data_driven",
+      "text": "Use data analytics to prioritize features with highest impact",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -15,
+          "business": 10,
+          "technical": 5
+        },
+        "company": {
+          "productQuality": 15,
+          "marketFit": 20,
+          "userGrowth": 10
+        }
       }
     },
     {
-      "id": "trendy_addon",
-      "text": "Develop the AI-powered feature: A smart recommendation engine that could differentiate your product.",
-      "successChance": 60,
+      "id": "customer_requests",
+      "text": "Focus on the most frequently requested features",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -10,
+          "reputation": 10
+        },
+        "company": {
+          "productQuality": 10,
+          "marketFit": 15,
+          "teamMorale": 5
+        }
+      }
+    },
+    {
+      "id": "strategic_vision",
+      "text": "Prioritize features aligned with your long-term strategic vision",
+      "impact": {
+        "founder": {
+          "energy": -20,
+          "leadership": 15
+        },
+        "company": {
+          "productQuality": 20,
+          "marketFit": 5,
+          "valuation": 50000
+        }
       }
     }
   ]
@@ -144,12 +205,14 @@ export const initialIdeaValidation: GameEvent = {
 export const productBrainstorming: GameEvent = {
   "id": "product_brainstorming_001",
   "category": "product",
-  "title": "Product Feature Brainstorming",
-  "description": "Time to brainstorm the core features of your product. What will set you apart from the competition?",
+  "title": "Product Brainstorming Session",
+  "description": "It's time to refine your product idea. You've set aside a day to brainstorm and define your MVP features.",
   "conditions": {
-    "requiredPhase": GamePhase.IDEATION,    "minimumStats": {
-      "founder": {},
-      "company": {}
+    "requiredPhase": GamePhase.IDEATION,
+    "minimumStats": {
+      "founder": {
+        "technical": 30
+      }
     }
   },
   "impact": {
@@ -158,20 +221,48 @@ export const productBrainstorming: GameEvent = {
   },
   "choices": [
     {
-      "id": "innovative_features",
-      "text": "Focus on innovative, cutting-edge features that could disrupt the market",
-      "successChance": 70,
+      "id": "focus_core_features",
+      "text": "Focus on core features that solve the main user problem",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -10,
+          "technical": 5
+        },
+        "company": {
+          "productQuality": 15,
+          "marketFit": 10
+        }
       }
     },
     {
-      "id": "market_needs",
-      "text": "Prioritize features based on clear market needs and user pain points",
+      "id": "innovative_approach",
+      "text": "Take an innovative approach with unique differentiators",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -15,
+          "technical": 10,
+          "reputation": 5
+        },
+        "company": {
+          "productQuality": 20,
+          "marketFit": 5,
+          "runway": -0.5
+        }
+      }
+    },
+    {
+      "id": "market_research",
+      "text": "Conduct additional market research before deciding on features",
+      "impact": {
+        "founder": {
+          "energy": -5,
+          "business": 5
+        },
+        "company": {
+          "productQuality": 5,
+          "marketFit": 15,
+          "runway": -0.5
+        }
       }
     }
   ]
@@ -181,11 +272,13 @@ export const prototypeStrategy: GameEvent = {
   "id": "prototype_strategy_001",
   "category": "product",
   "title": "Prototype Development Strategy",
-  "description": "You need to create a prototype to validate your ideas. How will you approach the initial development?",
+  "description": "You need to create a prototype to validate your idea. How will you approach this critical first step?",
   "conditions": {
-    "requiredPhase": GamePhase.IDEATION,    "minimumStats": {
-      "founder": {},
-      "company": {}
+    "requiredPhase": GamePhase.IDEATION,
+    "minimumStats": {
+      "founder": {
+        "technical": 35
+      }
     }
   },
   "impact": {
@@ -194,20 +287,48 @@ export const prototypeStrategy: GameEvent = {
   },
   "choices": [
     {
-      "id": "rapid_prototyping",
-      "text": "Use rapid prototyping tools to quickly create a functional demo",
-      "successChance": 80,
+      "id": "code_yourself",
+      "text": "Code the prototype yourself to save money",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -30,
+          "technical": 15,
+          "health": -10
+        },
+        "company": {
+          "productQuality": 10,
+          "runway": 0.5
+        }
       }
     },
     {
-      "id": "detailed_prototype",
-      "text": "Build a more polished prototype with attention to design and user experience",
+      "id": "hire_freelancer",
+      "text": "Hire a freelancer to build the prototype",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -10,
+          "cash": -3000
+        },
+        "company": {
+          "productQuality": 15,
+          "runway": -1
+        }
+      }
+    },
+    {
+      "id": "no_code_tools",
+      "text": "Use no-code tools to quickly create a functional mockup",
+      "impact": {
+        "founder": {
+          "energy": -15,
+          "technical": 5,
+          "cash": -500
+        },
+        "company": {
+          "productQuality": 5,
+          "marketFit": 10,
+          "runway": -0.2
+        }
       }
     }
   ]
@@ -216,10 +337,15 @@ export const prototypeStrategy: GameEvent = {
 export const userTesting: GameEvent = {
   "id": "user_testing_001",
   "category": "product",
-  "title": "Early User Testing",
-  "description": "Your prototype is ready for initial user testing. How will you gather early feedback?",
+  "title": "First User Testing Session",
+  "description": "Your prototype is ready for its first real user test. How will you gather and incorporate feedback?",
   "conditions": {
-    "requiredPhase": GamePhase.IDEATION,    "activeMilestone": "rapid_prototype_complete"
+    "requiredPhase": GamePhase.IDEATION,
+    "minimumStats": {
+      "company": {
+        "productQuality": 20
+      }
+    }
   },
   "impact": {
     "founder": {},
@@ -227,20 +353,48 @@ export const userTesting: GameEvent = {
   },
   "choices": [
     {
-      "id": "structured_testing",
-      "text": "Conduct structured user testing sessions with detailed feedback collection",
-      "successChance": 85,
+      "id": "in_person_testing",
+      "text": "Conduct in-person testing sessions with potential users",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -20,
+          "business": 10,
+          "cash": -500
+        },
+        "company": {
+          "productQuality": 15,
+          "marketFit": 20
+        }
       }
     },
     {
-      "id": "informal_feedback",
-      "text": "Share the prototype with your network for quick, informal feedback",
+      "id": "remote_testing",
+      "text": "Set up remote testing sessions to reach more diverse users",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -15,
+          "technical": 5,
+          "cash": -1000
+        },
+        "company": {
+          "productQuality": 10,
+          "marketFit": 15,
+          "userGrowth": 5
+        }
+      }
+    },
+    {
+      "id": "friends_family",
+      "text": "Test with friends and family first to save money",
+      "impact": {
+        "founder": {
+          "energy": -10,
+          "reputation": -5
+        },
+        "company": {
+          "productQuality": 5,
+          "marketFit": 5
+        }
       }
     }
   ]
@@ -282,15 +436,17 @@ export const investorDemo: GameEvent = {
   ]
 };
 
-export const productRoadmapPitch: GameEvent = {
-  "id": "product_roadmap_pitch_001",
+export const productRoadmapStrategy: GameEvent = {
+  "id": "product_roadmap_strategy_001",
   "category": "product",
-  "title": "Product Roadmap for Investors",
-  "description": "Investors want to see your product vision and roadmap. How will you present your future plans?",
+  "title": "Product Roadmap Strategy",
+  "description": "As your product gains traction, you need to define a clear roadmap for the next 6-12 months.",
   "conditions": {
-    "requiredPhase": GamePhase.FUNDRAISING,    "minimumStats": {
-      "founder": {},
-      "company": {}
+    "requiredPhase": GamePhase.BOOTSTRAPPING,
+    "minimumStats": {
+      "company": {
+        "userGrowth": 40
+      }
     }
   },
   "impact": {
@@ -299,20 +455,49 @@ export const productRoadmapPitch: GameEvent = {
   },
   "choices": [
     {
-      "id": "ambitious_vision",
-      "text": "Present an ambitious vision with breakthrough features and market expansion",
-      "successChance": 70,
+      "id": "user_centric",
+      "text": "Create a user-centric roadmap focused on solving customer pain points",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -15,
+          "business": 10
+        },
+        "company": {
+          "productQuality": 15,
+          "marketFit": 20,
+          "userGrowth": 15
+        }
       }
     },
     {
-      "id": "realistic_growth",
-      "text": "Focus on realistic, achievable growth with clear market validation",
+      "id": "innovation_focused",
+      "text": "Focus on innovative features that differentiate from competitors",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -20,
+          "technical": 15,
+          "reputation": 10
+        },
+        "company": {
+          "productQuality": 25,
+          "marketFit": 5,
+          "valuation": 100000
+        }
+      }
+    },
+    {
+      "id": "monetization_strategy",
+      "text": "Prioritize features that enhance monetization and revenue growth",
+      "impact": {
+        "founder": {
+          "energy": -15,
+          "business": 15
+        },
+        "company": {
+          "productQuality": 10,
+          "revenue": 5000,
+          "runway": 2
+        }
       }
     }
   ]
@@ -533,15 +718,18 @@ export const qualityChallenge: GameEvent = {
   ]
 };
 
-export const techDebtCrisis: GameEvent = {
-  "id": "tech_debt_crisis_001",
+export const technicalDebtCrisis: GameEvent = {
+  "id": "technical_debt_crisis_001",
   "category": "product",
   "title": "Technical Debt Crisis",
-  "description": "Rapid development has led to significant technical debt, threatening future development speed.",
+  "description": "Your rapid development has accumulated significant technical debt, causing bugs and slowing down new feature development.",
   "conditions": {
+    "requiredPhase": GamePhase.BOOTSTRAPPING,
     "minimumStats": {
-      "founder": {},
-      "company": {}
+      "company": {
+        "productQuality": 40,
+        "userGrowth": 30
+      }
     }
   },
   "impact": {
@@ -550,20 +738,49 @@ export const techDebtCrisis: GameEvent = {
   },
   "choices": [
     {
-      "id": "major_refactor",
-      "text": "Initiate a major refactoring project",
-      "successChance": 75,
+      "id": "refactor_codebase",
+      "text": "Dedicate a sprint to refactoring the codebase",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -25,
+          "technical": 15
+        },
+        "company": {
+          "productQuality": 25,
+          "userGrowth": -5,
+          "teamMorale": 15
+        }
       }
     },
     {
-      "id": "gradual_improvement",
-      "text": "Address technical debt gradually alongside new features",
+      "id": "gradual_improvements",
+      "text": "Make gradual improvements while continuing feature development",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -15,
+          "technical": 5
+        },
+        "company": {
+          "productQuality": 10,
+          "userGrowth": 5,
+          "teamMorale": 5
+        }
+      }
+    },
+    {
+      "id": "hire_specialists",
+      "text": "Hire technical specialists to address critical issues",
+      "impact": {
+        "founder": {
+          "energy": -10,
+          "cash": -5000
+        },
+        "company": {
+          "productQuality": 20,
+          "runway": -1,
+          "teamSize": 1,
+          "talent": 10
+        }
       }
     }
   ]

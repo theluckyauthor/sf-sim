@@ -4,8 +4,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { store } from './store/store';
 import { createGlobalStyle } from 'styled-components';
 import TitleScreen from './components/TitleScreen';
-import CreateFounder from './components/CreateFounder';
 import GameContainer from './components/GameContainer';
+import AboutPage from './components/AboutPage';
+import CreateFounder from './components/CreateFounder';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -21,6 +22,7 @@ const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: #1a1a1a;
+    color: #ffffff;
   }
 
   code {
@@ -36,8 +38,9 @@ function App() {
         <GlobalStyle />
         <Routes>
           <Route path="/" element={<TitleScreen />} />
-          <Route path="/create-founder" element={<CreateFounder />} />
+          <Route path="/create" element={<CreateFounder />} />
           <Route path="/game" element={<GameContainer />} />
+          <Route path="/about" element={<AboutPage />} />
         </Routes>
       </Router>
     </Provider>

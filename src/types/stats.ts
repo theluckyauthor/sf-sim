@@ -91,6 +91,7 @@ export interface EventConditions {
   minimumStats?: {
     founder?: Partial<FounderStats>;
     company?: Partial<CompanyStats>;
+    location?: Partial<LocationStats>;
   };
 }
 
@@ -121,12 +122,28 @@ export interface GameEventChoice {
   };
 }
 
+// Founder Profile
+export interface FounderProfile {
+  founderName: string;
+  background: string;
+  role: string;
+}
+
+// Startup Profile
+export interface StartupProfile {
+  startupName: string;
+  startupType: string;
+  catchphrase?: string;
+}
+
 // Combined Game State
 export interface GameState {
   founder: FounderStats;
   company: CompanyStats;
   location: LocationStats;
   progress: GameProgress;
+  founderProfile: FounderProfile;
+  startupProfile: StartupProfile;
 }
 
 // Random Event

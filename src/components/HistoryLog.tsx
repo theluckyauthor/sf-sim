@@ -60,6 +60,13 @@ const Consequence = styled.div<{ color: string }>`
   border-left: 2px solid ${props => props.color};
 `;
 
+const ConsequencesContainer = styled.div`
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
 interface HistoryEntry {
   timestamp: string;
   title: string;
@@ -84,21 +91,44 @@ const HistoryLog: React.FC = () => {
     }
   };
 
+  const formatTimestamp = (timestamp: string) => {
+    try {
+      const date = new Date(timestamp);
+      return date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (e) {
+      return timestamp; // Return original if parsing fails
+    }
+  };
+
   return (
     <Container>
       <Title>📜 History Log</Title>
-      {historyEntries.map((entry, index) => (
-        <LogEntry key={index}>
-          <Timestamp>{entry.timestamp}</Timestamp>
-          <EventTitle>{entry.title}</EventTitle>
-          <EventDescription>{entry.description}</EventDescription>
-          {entry.consequences.map((consequence, idx) => (
-            <Consequence key={idx} color={getConsequenceColor(consequence.type)}>
-              {consequence.text}
-            </Consequence>
-          ))}
-        </LogEntry>
-      ))}
+      {historyEntries.length === 0 ? (
+        <EventDescription>No events recorded yet.</EventDescription>
+      ) : (
+        historyEntries.map((entry, index) => (
+          <LogEntry key={index}>
+            <Timestamp>{formatTimestamp(entry.timestamp)}</Timestamp>
+            <EventTitle>{entry.title}</EventTitle>
+            <EventDescription>{entry.description}</EventDescription>
+            {entry.consequences && entry.consequences.length > 0 && (
+              <ConsequencesContainer>
+                {entry.consequences.map((consequence, idx) => (
+                  <Consequence key={idx} color={getConsequenceColor(consequence.type)}>
+                    {consequence.text}
+                  </Consequence>
+                ))}
+              </ConsequencesContainer>
+            )}
+          </LogEntry>
+        ))
+      )}
     </Container>
   );
 };

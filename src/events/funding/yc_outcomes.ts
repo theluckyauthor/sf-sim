@@ -72,11 +72,20 @@ export const ycRejection: GameEvent = {
 export const ycDemoDay: GameEvent = {
   "id": "yc_demo_day_001",
   "category": "funding",
-  "title": "YC Demo Day Preparation",
-  "description": "Demo Day is approaching. Hundreds of investors will be watching. Your presentation needs to be perfect.",
+  "title": "Y Combinator Demo Day",
+  "description": "The big day has arrived. You'll be presenting your startup to hundreds of investors at Y Combinator's Demo Day. Your pitch needs to be perfect.",
   "conditions": {
     "requiredPhase": GamePhase.FUNDRAISING,
-    "activeMilestone": "hyper_growth_mode_001"
+    "minimumStats": {
+      "founder": {
+        "reputation": 65,
+        "business": 60
+      },
+      "company": {
+        "productQuality": 70,
+        "marketFit": 65
+      }
+    }
   },
   "impact": {
     "founder": {},
@@ -84,19 +93,50 @@ export const ycDemoDay: GameEvent = {
   },
   "choices": [
     {
-      "id": "vision_pitch",
-      "text": "Focus on the big vision: Paint an ambitious picture of the future.",
+      "id": "growth_metrics",
+      "text": "Focus your pitch on impressive growth metrics and market potential",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -30,
+          "reputation": 25,
+          "business": 15
+        },
+        "company": {
+          "valuation": 1000000,
+          "runway": 6
+        }
       }
     },
     {
-      "id": "metrics_pitch",
-      "text": "Focus on metrics: Show concrete growth and market validation.",
+      "id": "product_innovation",
+      "text": "Emphasize your product's unique innovation and technical advantages",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -30,
+          "reputation": 20,
+          "technical": 15
+        },
+        "company": {
+          "valuation": 800000,
+          "runway": 5,
+          "productQuality": 10
+        }
+      }
+    },
+    {
+      "id": "team_story",
+      "text": "Tell a compelling story about your team and vision",
+      "impact": {
+        "founder": {
+          "energy": -25,
+          "reputation": 30,
+          "leadership": 15
+        },
+        "company": {
+          "valuation": 700000,
+          "runway": 4,
+          "teamMorale": 15
+        }
       }
     }
   ]
@@ -104,13 +144,20 @@ export const ycDemoDay: GameEvent = {
 
 // Post Demo Day Fundraising
 export const postDemoDayFundraising: GameEvent = {
-  "id": "post_demo_day_001",
+  "id": "post_demo_day_fundraising_001",
   "category": "funding",
-  "title": "Post Demo Day Dynamics",
-  "description": "Your inbox is flooded with investor interest after Demo Day. Time to navigate the fundraising dynamics.",
+  "title": "Post-Demo Day Fundraising",
+  "description": "After a successful Demo Day, you have multiple investor meetings lined up. How will you approach the fundraising process?",
   "conditions": {
     "requiredPhase": GamePhase.FUNDRAISING,
-    "activeMilestone": "ambitious_vision_001"
+    "minimumStats": {
+      "founder": {
+        "reputation": 70
+      },
+      "company": {
+        "valuation": 500000
+      }
+    }
   },
   "impact": {
     "founder": {},
@@ -118,19 +165,52 @@ export const postDemoDayFundraising: GameEvent = {
   },
   "choices": [
     {
-      "id": "competitive_round",
-      "text": "Create competition: Run a fast, competitive fundraising round.",
+      "id": "create_competition",
+      "text": "Create competition among investors to drive up valuation",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -35,
+          "business": 20,
+          "reputation": 15
+        },
+        "company": {
+          "valuation": 2000000,
+          "runway": 12,
+          "teamMorale": -5
+        }
       }
     },
     {
-      "id": "strategic_round",
-      "text": "Be selective: Focus on finding the right strategic investors.",
+      "id": "strategic_investors",
+      "text": "Focus on strategic investors who can add value beyond money",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -25,
+          "leadership": 15,
+          "reputation": 20
+        },
+        "company": {
+          "valuation": 1500000,
+          "runway": 10,
+          "marketFit": 15,
+          "teamMorale": 10
+        }
+      }
+    },
+    {
+      "id": "quick_close",
+      "text": "Close quickly with a reputable lead investor",
+      "impact": {
+        "founder": {
+          "energy": -15,
+          "business": 10,
+          "health": 10
+        },
+        "company": {
+          "valuation": 1000000,
+          "runway": 8,
+          "teamMorale": 15
+        }
       }
     }
   ]
@@ -140,11 +220,18 @@ export const postDemoDayFundraising: GameEvent = {
 export const ycBatchNetworking: GameEvent = {
   "id": "yc_batch_networking_001",
   "category": "funding",
-  "title": "YC Batch Connections",
-  "description": "Your batchmates include founders from diverse backgrounds and industries. Some are working on complementary products.",
+  "title": "Y Combinator Batch Networking",
+  "description": "As part of the Y Combinator program, you have the opportunity to network with other founders in your batch. These connections could be valuable for your startup's future.",
   "conditions": {
-      "requiredPhase": GamePhase.FUNDRAISING,
-    "activeMilestone": "hyper_growth_mode_001"
+    "requiredPhase": GamePhase.FUNDRAISING,
+    "minimumStats": {
+      "founder": {
+        "reputation": 60
+      },
+      "company": {
+        "productQuality": 50
+      }
+    }
   },
   "impact": {
     "founder": {},
@@ -152,19 +239,54 @@ export const ycBatchNetworking: GameEvent = {
   },
   "choices": [
     {
-      "id": "strategic_partnership",
-      "text": "Form a strategic partnership with a complementary startup in your batch.",
+      "id": "active_networking",
+      "text": "Actively network with as many founders as possible",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -20,
+          "reputation": 15,
+          "leadership": 10
+        },
+        "company": {
+          "teamMorale": 10,
+          "valuation": 100000
+        },
+        "location": {
+          "networkingScore": 20
+        }
       }
     },
     {
-      "id": "knowledge_sharing",
-      "text": "Focus on knowledge sharing and best practices within your batch.",
+      "id": "strategic_connections",
+      "text": "Focus on building deeper relationships with a few strategic founders",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -10,
+          "reputation": 10,
+          "business": 15
+        },
+        "company": {
+          "marketFit": 15,
+          "valuation": 150000
+        },
+        "location": {
+          "networkingScore": 15
+        }
+      }
+    },
+    {
+      "id": "minimal_engagement",
+      "text": "Maintain minimal engagement while focusing on your product",
+      "impact": {
+        "founder": {
+          "energy": 5,
+          "technical": 10,
+          "reputation": -5
+        },
+        "company": {
+          "productQuality": 20,
+          "teamMorale": 5
+        }
       }
     }
   ]
@@ -174,11 +296,16 @@ export const ycBatchNetworking: GameEvent = {
 export const ycTeamScaling: GameEvent = {
   "id": "yc_team_scaling_001",
   "category": "funding",
-  "title": "YC-Powered Team Growth",
-  "description": "With YC's network and resources, you have access to top talent. However, rapid hiring during the program comes with its own challenges.",
+  "title": "Y Combinator Team Scaling",
+  "description": "The YC partners suggest that you need to scale your team quickly to meet growth expectations. How will you approach hiring?",
   "conditions": {
-      "requiredPhase": GamePhase.FUNDRAISING,
-    "activeMilestone": "hyper_growth_mode_001"
+    "requiredPhase": GamePhase.FUNDRAISING,
+    "minimumStats": {
+      "company": {
+        "userGrowth": 50,
+        "teamSize": 2
+      }
+    }
   },
   "impact": {
     "founder": {},
@@ -186,19 +313,53 @@ export const ycTeamScaling: GameEvent = {
   },
   "choices": [
     {
-      "id": "rapid_hiring",
-      "text": "Leverage YC's network for rapid team expansion before demo day.",
+      "id": "aggressive_hiring",
+      "text": "Aggressively hire to scale the team quickly",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -25,
+          "leadership": 15,
+          "cash": -10000
+        },
+        "company": {
+          "teamSize": 5,
+          "runway": -3,
+          "talent": 10,
+          "teamMorale": -5
+        }
       }
     },
     {
       "id": "selective_hiring",
-      "text": "Make a few key strategic hires while maintaining team cohesion.",
+      "text": "Hire selectively, focusing on quality over quantity",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -15,
+          "leadership": 10,
+          "cash": -5000
+        },
+        "company": {
+          "teamSize": 2,
+          "runway": -1,
+          "talent": 20,
+          "teamMorale": 10
+        }
+      }
+    },
+    {
+      "id": "outsource_temporarily",
+      "text": "Temporarily outsource some functions while building the core team",
+      "impact": {
+        "founder": {
+          "energy": -10,
+          "business": 10,
+          "cash": -7000
+        },
+        "company": {
+          "teamSize": 1,
+          "runway": -2,
+          "productQuality": 15
+        }
       }
     }
   ]
@@ -208,11 +369,16 @@ export const ycTeamScaling: GameEvent = {
 export const ycMarketExpansion: GameEvent = {
   "id": "yc_market_expansion_001",
   "category": "funding",
-  "title": "Market Expansion Opportunity",
-  "description": "YC partners have identified potential for rapid market expansion. You need to decide how aggressively to pursue new market segments.",
+  "title": "Y Combinator Market Expansion",
+  "description": "During office hours, YC partners suggest expanding into a new market segment to accelerate growth before Demo Day.",
   "conditions": {
     "requiredPhase": GamePhase.FUNDRAISING,
-    "activeMilestone": "hyper_growth_mode_001"
+    "minimumStats": {
+      "company": {
+        "marketFit": 60,
+        "userGrowth": 40
+      }
+    }
   },
   "impact": {
     "founder": {},
@@ -220,19 +386,118 @@ export const ycMarketExpansion: GameEvent = {
   },
   "choices": [
     {
-      "id": "aggressive_expansion",
-      "text": "Pursue aggressive multi-market expansion to show massive growth potential.",
+      "id": "rapid_expansion",
+      "text": "Rapidly expand into the new market segment",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -30,
+          "business": 15,
+          "cash": -5000
+        },
+        "company": {
+          "userGrowth": 30,
+          "runway": -2,
+          "marketFit": 10,
+          "valuation": 300000
+        }
       }
     },
     {
-      "id": "focused_expansion",
-      "text": "Expand into one promising new market segment with strong validation.",
+      "id": "pilot_program",
+      "text": "Launch a small pilot program in the new market",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -15,
+          "business": 10,
+          "cash": -2000
+        },
+        "company": {
+          "userGrowth": 15,
+          "runway": -0.5,
+          "marketFit": 15,
+          "valuation": 150000
+        }
+      }
+    },
+    {
+      "id": "focus_current_market",
+      "text": "Politely decline and focus on dominating your current market",
+      "impact": {
+        "founder": {
+          "energy": -5,
+          "reputation": -5
+        },
+        "company": {
+          "userGrowth": 10,
+          "marketFit": 20,
+          "valuation": 100000
+        }
+      }
+    }
+  ]
+};
+
+export const boardFormation: GameEvent = {
+  "id": "board_formation_001",
+  "category": "funding",
+  "title": "Board Formation",
+  "description": "With your seed round closing, it's time to formalize your board of directors. This decision will impact your company's governance for years to come.",
+  "conditions": {
+    "requiredPhase": GamePhase.FUNDRAISING,
+    "minimumStats": {
+      "company": {
+        "valuation": 1000000,
+        "runway": 6
+      }
+    }
+  },
+  "impact": {
+    "founder": {},
+    "company": {}
+  },
+  "choices": [
+    {
+      "id": "founder_control",
+      "text": "Maintain strong founder control with a small, founder-friendly board",
+      "impact": {
+        "founder": {
+          "leadership": 20,
+          "reputation": 10
+        },
+        "company": {
+          "teamMorale": 15,
+          "valuation": -200000
+        }
+      }
+    },
+    {
+      "id": "experienced_board",
+      "text": "Bring on experienced industry veterans to the board",
+      "impact": {
+        "founder": {
+          "business": 15,
+          "leadership": 10
+        },
+        "company": {
+          "marketFit": 20,
+          "valuation": 300000,
+          "teamMorale": 5
+        }
+      }
+    },
+    {
+      "id": "investor_heavy",
+      "text": "Create an investor-heavy board to strengthen fundraising connections",
+      "impact": {
+        "founder": {
+          "business": 10,
+          "leadership": -5
+        },
+        "company": {
+          "valuation": 500000,
+          "runway": 2,
+          "teamMorale": -10
+        }
       }
     }
   ]
