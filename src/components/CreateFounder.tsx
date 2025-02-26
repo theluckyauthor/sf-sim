@@ -313,10 +313,10 @@ const startupTypes: StartupType[] = [
         marketFit: 20,
         userGrowth: 0,
         revenue: 0,
-        runway: 12,
+        runway: 24,
         valuation: 2000000,
         teamSize: 1,
-        teamMorale: 100,
+        teamMorale: 85,
         talent: 70
       }
     }
@@ -331,10 +331,10 @@ const startupTypes: StartupType[] = [
         marketFit: 25,
         userGrowth: 15,
         revenue: 0,
-        runway: 15,
+        runway: 30,
         valuation: 1000000,
         teamSize: 1,
-        teamMorale: 100,
+        teamMorale: 85,
         talent: 50
       }
     }
@@ -349,10 +349,10 @@ const startupTypes: StartupType[] = [
         marketFit: 30,
         userGrowth: 30,
         revenue: 0,
-        runway: 10,
+        runway: 20,
         valuation: 3000000,
         teamSize: 1,
-        teamMorale: 100,
+        teamMorale: 85,
         talent: 60
       }
     }
@@ -367,10 +367,10 @@ const startupTypes: StartupType[] = [
         marketFit: 25,
         userGrowth: 25,
         revenue: 0,
-        runway: 15,
+        runway: 30,
         valuation: 500000,
         teamSize: 1,
-        teamMorale: 100,
+        teamMorale: 85,
         talent: 50
       }
     }
@@ -456,8 +456,8 @@ const CreateFounder: React.FC = () => {
   const handleConfirm = () => {
     // Initialize founder state with new stat structure
     const founderState: FounderStats = {
-      health: selectedBackground.stats.founder.health ?? 80,
-      energy: selectedBackground.stats.founder.energy ?? 80,
+      health: selectedBackground.stats.founder.health ?? 85,
+      energy: selectedBackground.stats.founder.energy ?? 90,
       technical: (selectedBackground.stats.founder.technical ?? 50) + (selectedRole.stats.founder.technical ?? 0),
       business: (selectedBackground.stats.founder.business ?? 50) + (selectedRole.stats.founder.business ?? 0),
       leadership: (selectedBackground.stats.founder.leadership ?? 50) + (selectedRole.stats.founder.leadership ?? 0),
@@ -471,10 +471,10 @@ const CreateFounder: React.FC = () => {
       marketFit: selectedStartupType.stats.company.marketFit ?? 0,
       userGrowth: selectedStartupType.stats.company.userGrowth ?? 0,
       revenue: selectedStartupType.stats.company.revenue ?? 0,
-      runway: selectedStartupType.stats.company.runway ?? 12,
+      runway: selectedStartupType.stats.company.runway ?? 24,
       valuation: selectedStartupType.stats.company.valuation ?? 0,
       teamSize: selectedStartupType.stats.company.teamSize ?? 1,
-      teamMorale: selectedStartupType.stats.company.teamMorale ?? 100,
+      teamMorale: selectedStartupType.stats.company.teamMorale ?? 85,
       talent: selectedStartupType.stats.company.talent ?? 50
     };
 

@@ -10,24 +10,49 @@ export const productRoadmapStrategy: GameEvent = {
     "requiredPhase": GamePhase.BOOTSTRAPPING,    "activeMilestone": "feature_validation_001"
   },
   "impact": {
-    "founder": {},
-    "company": {}
+    "founder": {
+      "energy": -5,
+      "technical": 3,
+      "leadership": 2
+    },
+    "company": {
+      "productQuality": 3
+    }
   },
   "choices": [
     {
       "id": "depth_focus",
       "text": "Focus on deepening existing features based on power user feedback.",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -10,
+          "technical": 12,
+          "leadership": 5
+        },
+        "company": {
+          "productQuality": 15,
+          "marketFit": 10,
+          "userGrowth": 5,
+          "teamMorale": 8
+        }
       }
     },
     {
       "id": "breadth_expansion",
       "text": "Expand feature set to capture broader market segments.",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -15,
+          "technical": 8,
+          "business": 10,
+          "leadership": 3
+        },
+        "company": {
+          "productQuality": 5,
+          "marketFit": 15,
+          "userGrowth": 12,
+          "teamMorale": 5
+        }
       }
     }
   ]
@@ -43,24 +68,50 @@ export const userFeedbackIntegration: GameEvent = {
     "requiredPhase": GamePhase.BOOTSTRAPPING,    "activeMilestone": "feature_depth_001"
   },
   "impact": {
-    "founder": {},
-    "company": {}
+    "founder": {
+      "energy": -3,
+      "technical": 2,
+      "leadership": 2
+    },
+    "company": {
+      "productQuality": 2,
+      "marketFit": 3
+    }
   },
   "choices": [
     {
       "id": "data_driven",
       "text": "Implement comprehensive analytics and automated feedback collection.",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -8,
+          "technical": 10,
+          "business": 5
+        },
+        "company": {
+          "productQuality": 12,
+          "marketFit": 15,
+          "userGrowth": 8,
+          "teamMorale": -3,
+          "revenue": 5000
+        }
       }
     },
     {
       "id": "community_driven",
       "text": "Focus on direct user engagement and community feedback channels.",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -12,
+          "leadership": 8,
+          "reputation": 10
+        },
+        "company": {
+          "productQuality": 8,
+          "marketFit": 12,
+          "userGrowth": 15,
+          "teamMorale": 10
+        }
       }
     }
   ]
@@ -76,24 +127,52 @@ export const productScalingStrategy: GameEvent = {
     "requiredPhase": GamePhase.BOOTSTRAPPING,    "activeMilestone": "data_feedback_001"
   },
   "impact": {
-    "founder": {},
-    "company": {}
+    "founder": {
+      "energy": -5,
+      "technical": 3,
+      "business": 3
+    },
+    "company": {
+      "productQuality": 5,
+      "userGrowth": 3
+    }
   },
   "choices": [
     {
       "id": "vertical_scaling",
       "text": "Focus on scaling depth and performance of core features.",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -10,
+          "technical": 15,
+          "leadership": 5
+        },
+        "company": {
+          "productQuality": 20,
+          "marketFit": 10,
+          "userGrowth": 5,
+          "revenue": 10000,
+          "teamMorale": 8
+        }
       }
     },
     {
       "id": "horizontal_scaling",
       "text": "Expand platform capabilities and integration options.",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -15,
+          "technical": 10,
+          "business": 12,
+          "leadership": 8
+        },
+        "company": {
+          "productQuality": 8,
+          "marketFit": 15,
+          "userGrowth": 15,
+          "revenue": 20000,
+          "valuation": 100000
+        }
       }
     }
   ]

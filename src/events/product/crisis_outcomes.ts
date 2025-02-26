@@ -10,24 +10,49 @@ export const processReview: GameEvent = {
     "requiredPhase": GamePhase.BOOTSTRAPPING,    "activeMilestone": "crisis_management_001"
   },
   "impact": {
-    "founder": {},
-    "company": {}
+    "founder": {
+      "energy": -5,
+      "technical": 3,
+      "leadership": 2
+    },
+    "company": {
+      "teamMorale": -3,
+      "productQuality": 2
+    }
   },
   "choices": [
     {
       "id": "comprehensive_process",
       "text": "Implement comprehensive testing and code review processes, even if it slows development.",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -10,
+          "technical": 12,
+          "leadership": 8
+        },
+        "company": {
+          "productQuality": 20,
+          "teamMorale": 5,
+          "userGrowth": -5,
+          "talent": 10
+        }
       }
     },
     {
       "id": "balanced_approach",
       "text": "Add key safeguards while maintaining development speed.",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -5,
+          "technical": 5,
+          "leadership": 3
+        },
+        "company": {
+          "productQuality": 8,
+          "teamMorale": 10,
+          "userGrowth": 5,
+          "talent": 5
+        }
       }
     }
   ]
@@ -43,24 +68,49 @@ export const technicalDebtCrisis: GameEvent = {
     "requiredPhase": GamePhase.BOOTSTRAPPING,    "activeMilestone": "quality_first_001"
   },
   "impact": {
-    "founder": {},
-    "company": {}
+    "founder": {
+      "energy": -8,
+      "technical": 5,
+      "leadership": -2
+    },
+    "company": {
+      "teamMorale": -5,
+      "productQuality": -3
+    }
   },
   "choices": [
     {
       "id": "major_refactor",
       "text": "Pause new features for a major codebase refactoring sprint.",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -15,
+          "technical": 15,
+          "leadership": 5
+        },
+        "company": {
+          "productQuality": 25,
+          "teamMorale": 10,
+          "userGrowth": -10,
+          "revenue": -5000
+        }
       }
     },
     {
       "id": "gradual_improvement",
       "text": "Address technical debt gradually alongside new features.",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -8,
+          "technical": 8,
+          "leadership": 3
+        },
+        "company": {
+          "productQuality": 10,
+          "teamMorale": 5,
+          "userGrowth": 5,
+          "revenue": 5000
+        }
       }
     }
   ]
@@ -76,24 +126,49 @@ export const teamCultureFallout: GameEvent = {
     "requiredPhase": GamePhase.BOOTSTRAPPING,    "activeMilestone": "codebase_cleanup_001"
   },
   "impact": {
-    "founder": {},
-    "company": {}
+    "founder": {
+      "energy": -5,
+      "leadership": 3,
+      "reputation": -2
+    },
+    "company": {
+      "teamMorale": -8,
+      "talent": -3
+    }
   },
   "choices": [
     {
       "id": "structured_support",
       "text": "Implement structured on-call rotations and clear emergency procedures.",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -5,
+          "leadership": 12,
+          "reputation": 5
+        },
+        "company": {
+          "teamMorale": 15,
+          "talent": 10,
+          "productQuality": 8,
+          "teamSize": -1
+        }
       }
     },
     {
       "id": "flexible_approach",
       "text": "Keep things flexible but provide additional compensation for crisis management.",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -8,
+          "leadership": 5,
+          "cash": -10000
+        },
+        "company": {
+          "teamMorale": 10,
+          "talent": 5,
+          "productQuality": 3,
+          "runway": -1
+        }
       }
     }
   ]
@@ -109,24 +184,50 @@ export const crisisPreventionPlanning: GameEvent = {
     "requiredPhase": GamePhase.BOOTSTRAPPING,    "activeMilestone": "sustainable_culture_001"
   },
   "impact": {
-    "founder": {},
-    "company": {}
+    "founder": {
+      "energy": -5,
+      "technical": 3,
+      "leadership": 5
+    },
+    "company": {
+      "productQuality": 5,
+      "teamMorale": 3
+    }
   },
   "choices": [
     {
       "id": "automated_systems",
       "text": "Invest in comprehensive monitoring and automated response systems.",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -8,
+          "technical": 15,
+          "cash": -15000
+        },
+        "company": {
+          "productQuality": 20,
+          "teamMorale": 5,
+          "talent": 8,
+          "runway": -2
+        }
       }
     },
     {
       "id": "human_centered",
       "text": "Focus on team training and human-centered prevention strategies.",
       "impact": {
-        "founder": {},
-        "company": {}
+        "founder": {
+          "energy": -12,
+          "leadership": 12,
+          "reputation": 8,
+          "cash": -5000
+        },
+        "company": {
+          "productQuality": 10,
+          "teamMorale": 15,
+          "talent": 12,
+          "runway": -1
+        }
       }
     }
   ]

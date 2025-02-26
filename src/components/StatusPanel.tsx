@@ -1,8 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/store';
 import { FounderStats, CompanyStats, LocationStats, GameProgress, FounderProfile, StartupProfile } from '../types/stats';
+import { fixTeamSize } from '../store/gameSlice';
+import { ThunkDispatch } from 'redux-thunk';
+import { AnyAction } from 'redux';
 
 const Panel = styled.div`
   background-color: #2a2a2a;
@@ -59,21 +62,19 @@ const Value = styled.span<{ color?: string }>`
   text-overflow: ellipsis;
 `;
 
-const ProgressBar = styled.div<{ value: number; color: string }>`
+const ProgressBarContainer = styled.div`
   width: 100%;
   height: 6px;
   background-color: #3a3a3a;
   border-radius: 3px;
   overflow: hidden;
+`;
 
-  &::after {
-    content: '';
-    display: block;
-    width: ${props => props.value}%;
-    height: 100%;
-    background-color: ${props => props.color};
-    transition: width 0.3s ease;
-  }
+const ProgressBarFill = styled.div<{ width: number; color: string }>`
+  height: 100%;
+  width: ${props => `${props.width}%`};
+  background-color: ${props => props.color};
+  transition: width 0.3s ease;
 `;
 
 const Grid = styled.div`
@@ -100,6 +101,25 @@ const ProfileSubtitle = styled.div`
   color: #888;
 `;
 
+const FixButton = styled.button`
+  background-color: #FF5722;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 12px;
+  cursor: pointer;
+  margin-left: 8px;
+  &:hover {
+    background-color: #E64A19;
+  }
+`;
+
+const StatRow = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 interface GameState {
   founder: FounderStats;
   company: CompanyStats;
@@ -111,6 +131,7 @@ interface GameState {
 
 const StatusPanel: React.FC = () => {
   const { founder, company, location, progress, founderProfile, startupProfile } = useSelector((state: RootState) => state.game as GameState);
+  const dispatch = useDispatch<ThunkDispatch<RootState, unknown, AnyAction>>();
 
   const formatCash = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -161,6 +182,10 @@ const StatusPanel: React.FC = () => {
     }
   };
 
+  const handleFixTeamSize = () => {
+    dispatch(fixTeamSize());
+  };
+
   return (
     <Panel>
       <Section>
@@ -177,27 +202,37 @@ const StatusPanel: React.FC = () => {
           <StatItem>
             <Label>Health</Label>
             <Value color={founder.health <= 30 ? "#FF5722" : "#4CAF50"}>{founder.health}%</Value>
-            <ProgressBar value={founder.health} color={founder.health <= 30 ? "#FF5722" : "#4CAF50"} />
+            <ProgressBarContainer>
+              <ProgressBarFill width={founder.health} color={founder.health <= 30 ? "#FF5722" : "#4CAF50"} />
+            </ProgressBarContainer>
           </StatItem>
           <StatItem>
             <Label>Energy</Label>
             <Value color={founder.energy <= 30 ? "#FF5722" : "#2196F3"}>{founder.energy}%</Value>
-            <ProgressBar value={founder.energy} color={founder.energy <= 30 ? "#FF5722" : "#2196F3"} />
+            <ProgressBarContainer>
+              <ProgressBarFill width={founder.energy} color={founder.energy <= 30 ? "#FF5722" : "#2196F3"} />
+            </ProgressBarContainer>
           </StatItem>
           <StatItem>
             <Label>Technical</Label>
             <Value>{founder.technical}%</Value>
-            <ProgressBar value={founder.technical} color="#FF9800" />
+            <ProgressBarContainer>
+              <ProgressBarFill width={founder.technical} color="#FF9800" />
+            </ProgressBarContainer>
           </StatItem>
           <StatItem>
             <Label>Business</Label>
             <Value>{founder.business}%</Value>
-            <ProgressBar value={founder.business} color="#9C27B0" />
+            <ProgressBarContainer>
+              <ProgressBarFill width={founder.business} color="#9C27B0" />
+            </ProgressBarContainer>
           </StatItem>
           <StatItem>
             <Label>Leadership</Label>
             <Value>{founder.leadership}%</Value>
-            <ProgressBar value={founder.leadership} color="#E91E63" />
+            <ProgressBarContainer>
+              <ProgressBarFill width={founder.leadership} color="#E91E63" />
+            </ProgressBarContainer>
           </StatItem>
           <StatItem>
             <Label>Cash</Label>
@@ -206,7 +241,9 @@ const StatusPanel: React.FC = () => {
           <StatItem>
             <Label>Reputation</Label>
             <Value>{founder.reputation}%</Value>
-            <ProgressBar value={founder.reputation} color="#9C27B0" />
+            <ProgressBarContainer>
+              <ProgressBarFill width={founder.reputation} color="#9C27B0" />
+            </ProgressBarContainer>
           </StatItem>
         </Grid>
       </Section>
@@ -217,17 +254,23 @@ const StatusPanel: React.FC = () => {
           <StatItem>
             <Label>Product Quality</Label>
             <Value>{company.productQuality}%</Value>
-            <ProgressBar value={company.productQuality} color="#2196F3" />
+            <ProgressBarContainer>
+              <ProgressBarFill width={company.productQuality} color="#2196F3" />
+            </ProgressBarContainer>
           </StatItem>
           <StatItem>
             <Label>Market Fit</Label>
             <Value>{company.marketFit}%</Value>
-            <ProgressBar value={company.marketFit} color="#4CAF50" />
+            <ProgressBarContainer>
+              <ProgressBarFill width={company.marketFit} color="#4CAF50" />
+            </ProgressBarContainer>
           </StatItem>
           <StatItem>
             <Label>User Growth</Label>
             <Value>{company.userGrowth}%</Value>
-            <ProgressBar value={company.userGrowth} color="#FF9800" />
+            <ProgressBarContainer>
+              <ProgressBarFill width={company.userGrowth} color="#FF9800" />
+            </ProgressBarContainer>
           </StatItem>
           <StatItem>
             <Label>Revenue</Label>
@@ -243,17 +286,26 @@ const StatusPanel: React.FC = () => {
           </StatItem>
           <StatItem>
             <Label>Team Size</Label>
-            <Value>{company.teamSize}</Value>
+            <StatRow>
+              <Value>{company.teamSize}</Value>
+              {company.teamSize > 50 && (
+                <FixButton onClick={handleFixTeamSize}>Fix</FixButton>
+              )}
+            </StatRow>
           </StatItem>
           <StatItem>
             <Label>Team Morale</Label>
             <Value>{company.teamMorale}%</Value>
-            <ProgressBar value={company.teamMorale} color="#FF5722" />
+            <ProgressBarContainer>
+              <ProgressBarFill width={company.teamMorale} color="#FF5722" />
+            </ProgressBarContainer>
           </StatItem>
           <StatItem>
             <Label>Talent</Label>
             <Value>{company.talent}%</Value>
-            <ProgressBar value={company.talent} color="#E91E63" />
+            <ProgressBarContainer>
+              <ProgressBarFill width={company.talent} color="#E91E63" />
+            </ProgressBarContainer>
           </StatItem>
         </Grid>
       </Section>

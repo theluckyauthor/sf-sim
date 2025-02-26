@@ -242,12 +242,25 @@ const TextPanel: React.FC<TextPanelProps> = ({ currentEvent, onEventComplete }) 
     }
     
     // Add history entry
-    dispatch(addHistoryEntry({
-      timestamp: new Date().toISOString(),
-      title: currentEvent.title,
-      description: choice.text,
-      consequences: impactDetails
-    }));
+    if (impactDetails.length > 0) {
+      dispatch(addHistoryEntry({
+        timestamp: new Date().toISOString(),
+        title: currentEvent.title,
+        description: choice.text,
+        consequences: impactDetails
+      }));
+    } else {
+      // For events with no numeric impacts, still add a history entry but with a neutral message
+      dispatch(addHistoryEntry({
+        timestamp: new Date().toISOString(),
+        title: currentEvent.title,
+        description: choice.text,
+        consequences: [{
+          text: "You made a strategic decision with no immediate stat changes.",
+          type: 'neutral'
+        }]
+      }));
+    }
     
     // Check for achievements
     checkForAchievements(choice.impact);
